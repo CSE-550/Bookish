@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookish.Client", "Bookish\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookish.Shared", "Bookish\Shared\Bookish.Shared.csproj", "{F9C75F5D-1DFC-4292-8C39-30BC40664A1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Tests", "Client.Tests\Client.Tests.csproj", "{BFB0749B-DA9E-4FB0-B8C9-25058FB88328}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F9C75F5D-1DFC-4292-8C39-30BC40664A1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9C75F5D-1DFC-4292-8C39-30BC40664A1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9C75F5D-1DFC-4292-8C39-30BC40664A1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFB0749B-DA9E-4FB0-B8C9-25058FB88328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFB0749B-DA9E-4FB0-B8C9-25058FB88328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFB0749B-DA9E-4FB0-B8C9-25058FB88328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFB0749B-DA9E-4FB0-B8C9-25058FB88328}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
