@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookish.Server", "Bookish\Server\Bookish.Server.csproj", "{E0D4D9ED-7196-43EA-96AA-558A76E7ED66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Server", "Bookish\Server\Bookish.Server.csproj", "{E0D4D9ED-7196-43EA-96AA-558A76E7ED66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookish.Client", "Bookish\Client\Bookish.Client.csproj", "{C5288155-6781-4D9B-B5B5-ACCF315A6611}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Client", "Bookish\Client\Bookish.Client.csproj", "{C5288155-6781-4D9B-B5B5-ACCF315A6611}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookish.Shared", "Bookish\Shared\Bookish.Shared.csproj", "{F9C75F5D-1DFC-4292-8C39-30BC40664A1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Shared", "Bookish\Shared\Bookish.Shared.csproj", "{F9C75F5D-1DFC-4292-8C39-30BC40664A1C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client.Tests", "Bookish\Client.Tests\Client.Tests.csproj", "{8E8ACE80-A8B8-457E-94BD-6D7A9351B659}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Client.Tests", "Bookish\Client.Tests\Bookish.Client.Tests.csproj", "{8E8ACE80-A8B8-457E-94BD-6D7A9351B659}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
