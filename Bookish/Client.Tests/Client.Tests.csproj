@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bookish\Client\Bookish.Client.csproj" />
+    <ProjectReference Include="..\Client\Bookish.Client.csproj" />
   </ItemGroup>
 
 </Project>
