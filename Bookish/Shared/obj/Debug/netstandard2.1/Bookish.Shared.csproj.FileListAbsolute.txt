@@ -1,9 +1,0 @@
-C:\Users\formy\Workspace\Bookish\Bookish\Shared\bin\Debug\netstandard2.1\Bookish.Shared.deps.json
-C:\Users\formy\Workspace\Bookish\Bookish\Shared\bin\Debug\netstandard2.1\Bookish.Shared.dll
-C:\Users\formy\Workspace\Bookish\Bookish\Shared\bin\Debug\netstandard2.1\Bookish.Shared.pdb
-C:\Users\formy\Workspace\Bookish\Bookish\Shared\obj\Debug\netstandard2.1\Bookish.Shared.csprojAssemblyReference.cache
-C:\Users\formy\Workspace\Bookish\Bookish\Shared\obj\Debug\netstandard2.1\Bookish.Shared.AssemblyInfoInputs.cache
-C:\Users\formy\Workspace\Bookish\Bookish\Shared\obj\Debug\netstandard2.1\Bookish.Shared.AssemblyInfo.cs
-C:\Users\formy\Workspace\Bookish\Bookish\Shared\obj\Debug\netstandard2.1\Bookish.Shared.csproj.CoreCompileInputs.cache
-C:\Users\formy\Workspace\Bookish\Bookish\Shared\obj\Debug\netstandard2.1\Bookish.Shared.dll
-C:\Users\formy\Workspace\Bookish\Bookish\Shared\obj\Debug\netstandard2.1\Bookish.Shared.pdb

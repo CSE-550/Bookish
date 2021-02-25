@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data\Bookish.Data.csproj" />
+    <ProjectReference Include="..\Models\Bookish.Models.csproj" />
+  </ItemGroup>
+
+</Project>
