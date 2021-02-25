@@ -32,17 +32,17 @@ namespace Bookish.Data.Migrations
                     b.Property<DateTime>("Commented_At")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("Commented_UnderId")
+                    b.Property<int>("Commented_OnId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("Commneted_OnId")
+                    b.Property<int?>("Commented_UnderId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Commented_UnderId");
+                    b.HasIndex("Commented_OnId");
 
-                    b.HasIndex("Commneted_OnId");
+                    b.HasIndex("Commented_UnderId");
 
                     b.ToTable("Comments");
                 });
@@ -70,13 +70,15 @@ namespace Bookish.Data.Migrations
 
             modelBuilder.Entity("Bookish.Data.Comment", b =>
                 {
+                    b.HasOne("Bookish.Data.Post", "Commented_On")
+                        .WithMany("Comments")
+                        .HasForeignKey("Commented_OnId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Bookish.Data.Comment", "Commented_Under")
                         .WithMany()
                         .HasForeignKey("Commented_UnderId");
-
-                    b.HasOne("Bookish.Data.Post", "Commneted_On")
-                        .WithMany("Comments")
-                        .HasForeignKey("Commneted_OnId");
                 });
 #pragma warning restore 612, 618
         }

@@ -27,6 +27,7 @@ namespace Bookish.Server
         {
             services.AddDbContext<Context>(opt => opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), npgsql => npgsql.MigrationsAssembly("Bookish.Data")));
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICommentService, CommentService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

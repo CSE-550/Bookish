@@ -31,35 +31,35 @@ namespace Bookish.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Body = table.Column<string>(nullable: true),
                     Commented_At = table.Column<DateTime>(nullable: false),
-                    Commneted_OnId = table.Column<int>(nullable: true),
+                    Commented_OnId = table.Column<int>(nullable: false),
                     Commented_UnderId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Comments_Posts_Commented_OnId",
+                        column: x => x.Commented_OnId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Comments_Comments_Commented_UnderId",
                         column: x => x.Commented_UnderId,
                         principalTable: "Comments",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Comments_Posts_Commneted_OnId",
-                        column: x => x.Commneted_OnId,
-                        principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_Commented_OnId",
+                table: "Comments",
+                column: "Commented_OnId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_Commented_UnderId",
                 table: "Comments",
                 column: "Commented_UnderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_Commneted_OnId",
-                table: "Comments",
-                column: "Commneted_OnId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

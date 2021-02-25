@@ -21,6 +21,12 @@ namespace Bookish.Models
         /// </summary>
         public int Post_Id { get; set; }
 
+
+        /// <summary>
+        /// The parent comment id
+        /// </summary>
+        public int? Parent_Id { get; set; }
+
         /// <summary>
         /// The body text of the comment
         /// </summary>
