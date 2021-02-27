@@ -1,15 +1,26 @@
-﻿@page  "/Post/View"
+﻿@page  "/Post/View/{Id:int}"
 @inject HttpClient Http
-<h3>@Model.Title </h3>
-@Model.Posted_At - @Model.TotalComments Comments
-@Model.Body
-@code { private PostModel Model = new PostModel() { 
+
+
+<h3>@Model.Title</h3>
+<p>@Model.Posted_At</p>   
+<p>@Model.TotalComments Comments</p>
+<p>@Model.Body</p>
+
+
+
+@code { private PostModel Model = new PostModel() {
         Title = "Life Span", TotalComments = 172, Body="This book is very important and talks about..."};
+    [Parameter]
+    public int Id { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
 
-    //protected override async Task OnInitializedAsync()
-    //{
+        var post = await Http.GetFromJsonAsync<PostModel>("/api/post?id="+Id);
+        if (post != null)
+        {
+            Model = post;
+        }
+    }
 
-    //   // var post = await Http.GetFromJsonAsync<List<PostModel>>("/api/post");
-
-    //}
 }

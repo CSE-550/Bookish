@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Client\Client.csproj" />
     <ProjectReference Include="..\DataServices\Bookish.DataServices.csproj" />
     <ProjectReference Include="..\Data\Bookish.Data.csproj" />
   </ItemGroup>
