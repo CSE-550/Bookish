@@ -1,0 +1,15 @@
+﻿@page  "/Post/View"
+@inject HttpClient Http
+<h3>@Model.Title </h3>
+@Model.Posted_At - @Model.TotalComments Comments
+@Model.Body
+@code { private PostModel Model = new PostModel() { 
+        Title = "Life Span", TotalComments = 172, Body="This book is very important and talks about..."};
+
+    //protected override async Task OnInitializedAsync()
+    //{
+
+    //   // var post = await Http.GetFromJsonAsync<List<PostModel>>("/api/post");
+
+    //}
+}
