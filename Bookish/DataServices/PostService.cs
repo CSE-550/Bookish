@@ -32,9 +32,16 @@ namespace Bookish.DataServices
         /// </returns>
         public List<PostListModel> GetPosts(int page, int countPerPage, string orderBy)
         {
+            int skip = (page - 1) * countPerPage;
+
+            if (skip < 0)
+            {
+                throw new Exception("Pagination must be above 1");
+            }
+
             // TODO: Verify counts and order the posts
             return context.Posts
-                .Skip(page * countPerPage)
+                .Skip(skip)
                 .Take(countPerPage)
                 .Select(post => new PostListModel { 
                     Id = post.Id,
