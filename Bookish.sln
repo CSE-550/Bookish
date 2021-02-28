@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Client.Tests", "Boo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Data", "Bookish\Data\Bookish.Data.csproj", "{A63A4213-0274-4224-800C-409FD6E3DABA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookish.DataServices", "Bookish\DataServices\Bookish.DataServices.csproj", "{28C6ED87-8904-4DAB-9D4B-E84A264C4D8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.DataServices", "Bookish\DataServices\Bookish.DataServices.csproj", "{28C6ED87-8904-4DAB-9D4B-E84A264C4D8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bookish.Models", "Bookish\Models\Bookish.Models.csproj", "{C7352CE9-92D7-46ED-B57D-A86BB46CF7EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Models", "Bookish\Models\Bookish.Models.csproj", "{C7352CE9-92D7-46ED-B57D-A86BB46CF7EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataService.Test", "Bookish\DataService.Test\DataService.Test.csproj", "{1791F527-3FF6-423D-9453-30727CB43237}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{C7352CE9-92D7-46ED-B57D-A86BB46CF7EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7352CE9-92D7-46ED-B57D-A86BB46CF7EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7352CE9-92D7-46ED-B57D-A86BB46CF7EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1791F527-3FF6-423D-9453-30727CB43237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1791F527-3FF6-423D-9453-30727CB43237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1791F527-3FF6-423D-9453-30727CB43237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1791F527-3FF6-423D-9453-30727CB43237}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
