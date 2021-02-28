@@ -9,8 +9,7 @@
 
 
 
-@code { private PostModel Model = new PostModel() {
-        Title = "Life Span", TotalComments = 172, Body="This book is very important and talks about..."};
+@code { private PostModel Model = new PostModel() {};
     [Parameter]
     public int Id { get; set; }
     protected override async Task OnInitializedAsync()
