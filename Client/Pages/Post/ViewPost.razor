@@ -2,11 +2,10 @@
 @inject HttpClient Http
 
 
-<h3>@Model.Title</h3>
-<p>@Model.Posted_At</p>   
-<p>@Model.TotalComments Comments</p>
 <p>@Model.Body</p>
+<p>@Model.TotalComments Comments</p>
 
+<p>@Model.Comments</p>
 
 
 @code { private PostModel Model = new PostModel() {};
