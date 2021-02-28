@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Server", "Bookish\Server\Bookish.Server.csproj", "{E0D4D9ED-7196-43EA-96AA-558A76E7ED66}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Client", "Bookish\Client\Bookish.Client.csproj", "{C5288155-6781-4D9B-B5B5-ACCF315A6611}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Client.Tests", "Bookish\Client.Tests\Bookish.Client.Tests.csproj", "{8E8ACE80-A8B8-457E-94BD-6D7A9351B659}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Data", "Bookish\Data\Bookish.Data.csproj", "{A63A4213-0274-4224-800C-409FD6E3DABA}"
@@ -15,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.DataServices", "Boo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Models", "Bookish\Models\Bookish.Models.csproj", "{C7352CE9-92D7-46ED-B57D-A86BB46CF7EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataService.Test", "Bookish\DataService.Test\DataService.Test.csproj", "{1791F527-3FF6-423D-9453-30727CB43237}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.DataService.Test", "Bookish\DataService.Test\Bookish.DataService.Test.csproj", "{1791F527-3FF6-423D-9453-30727CB43237}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Client", "Bookish\Client\Bookish.Client.csproj", "{7D9FC163-87D1-4EF8-AC96-3C7431DFE950}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +27,6 @@ Global
 		{E0D4D9ED-7196-43EA-96AA-558A76E7ED66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0D4D9ED-7196-43EA-96AA-558A76E7ED66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0D4D9ED-7196-43EA-96AA-558A76E7ED66}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C5288155-6781-4D9B-B5B5-ACCF315A6611}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5288155-6781-4D9B-B5B5-ACCF315A6611}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5288155-6781-4D9B-B5B5-ACCF315A6611}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5288155-6781-4D9B-B5B5-ACCF315A6611}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8E8ACE80-A8B8-457E-94BD-6D7A9351B659}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8E8ACE80-A8B8-457E-94BD-6D7A9351B659}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E8ACE80-A8B8-457E-94BD-6D7A9351B659}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +47,10 @@ Global
 		{1791F527-3FF6-423D-9453-30727CB43237}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1791F527-3FF6-423D-9453-30727CB43237}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1791F527-3FF6-423D-9453-30727CB43237}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D9FC163-87D1-4EF8-AC96-3C7431DFE950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D9FC163-87D1-4EF8-AC96-3C7431DFE950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D9FC163-87D1-4EF8-AC96-3C7431DFE950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D9FC163-87D1-4EF8-AC96-3C7431DFE950}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
