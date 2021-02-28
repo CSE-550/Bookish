@@ -13,10 +13,22 @@ namespace DataService.Test
     [TestFixture]
     public class PostServiceTests
     {
+        /// <summary>
+        /// The in memory context
+        /// </summary>
         private Context context;
+        /// <summary>
+        /// The post service for CRUD
+        /// </summary>
         private PostService postService;
+        /// <summary>
+        /// The comment service for CRUD
+        /// </summary>
         private CommentService commentService;
 
+        /// <summary>
+        /// Init the test by creating services and context
+        /// </summary>
         [OneTimeSetUp]
         public void Init()
         {
@@ -28,6 +40,9 @@ namespace DataService.Test
             postService = new PostService(context, commentService);
         }
 
+        /// <summary>
+        /// Create a post and verify the information
+        /// </summary>
         [TestCase]
         public void CreatePost()
         {
@@ -46,6 +61,9 @@ namespace DataService.Test
             Assert.AreEqual(model.Body, post.Body);
         }
 
+        /// <summary>
+        /// Read the post created above and verify the model
+        /// </summary>
         [TestCase]
         public void ReadPost()
         {
@@ -56,6 +74,10 @@ namespace DataService.Test
             Assert.AreEqual(model.Body, post.Body);
         }
 
+        /// <summary>
+        /// Get a list of posts and verify that we get the amount
+        /// expected
+        /// </summary>
         [TestCase]
         public void ReadPosts()
         {
