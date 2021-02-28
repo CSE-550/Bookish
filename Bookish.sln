@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.DataServices", "Boo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Models", "Bookish\Models\Bookish.Models.csproj", "{C7352CE9-92D7-46ED-B57D-A86BB46CF7EC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{EFDB6C20-51DA-4D77-9922-BE30B6FB2C32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookish.Client", "Bookish\Client\Bookish.Client.csproj", "{7D9FC163-87D1-4EF8-AC96-3C7431DFE950}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{C7352CE9-92D7-46ED-B57D-A86BB46CF7EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7352CE9-92D7-46ED-B57D-A86BB46CF7EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7352CE9-92D7-46ED-B57D-A86BB46CF7EC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EFDB6C20-51DA-4D77-9922-BE30B6FB2C32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EFDB6C20-51DA-4D77-9922-BE30B6FB2C32}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EFDB6C20-51DA-4D77-9922-BE30B6FB2C32}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EFDB6C20-51DA-4D77-9922-BE30B6FB2C32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D9FC163-87D1-4EF8-AC96-3C7431DFE950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D9FC163-87D1-4EF8-AC96-3C7431DFE950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D9FC163-87D1-4EF8-AC96-3C7431DFE950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D9FC163-87D1-4EF8-AC96-3C7431DFE950}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
