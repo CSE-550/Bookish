@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
+using System;
 using System.Linq;
 
 namespace Bookish.Server
@@ -25,7 +27,31 @@ namespace Bookish.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Context>(opt => opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), npgsql => npgsql.MigrationsAssembly("Bookish.Data")));
+            string databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            string connectionString;
+            if (databaseUrl != null)
+            {
+                Uri databaseUri = new Uri(databaseUrl);
+                string[] userInfo = databaseUri.UserInfo.Split(':');
+
+                var builder = new NpgsqlConnectionStringBuilder
+                {
+                    Host = databaseUri.Host,
+                    Port = databaseUri.Port,
+                    Username = userInfo[0],
+                    Password = userInfo[1],
+                    Database = databaseUri.LocalPath.TrimStart('/'),
+                    SslMode = SslMode.Require,
+                    TrustServerCertificate = true
+                };
+                connectionString = builder.ToString();
+            } 
+            else
+            {
+                connectionString = Configuration.GetConnectionString("DefaultConnection");
+            }
+
+            services.AddDbContext<Context>(opt => opt.UseNpgsql(connectionString, npgsql => npgsql.MigrationsAssembly("Bookish.Data")));
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddControllersWithViews();
@@ -44,7 +70,7 @@ namespace Bookish.Server
             {
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                //app.UseHsts();
             }
 
             //app.UseHttpsRedirection();
