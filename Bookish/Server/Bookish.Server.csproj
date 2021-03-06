@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>5321d4a6-39f2-427c-848b-5110908c471c</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,10 +15,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.12" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Client\Client.csproj" />
+    <ProjectReference Include="..\Client\Bookish.Client.csproj" />
     <ProjectReference Include="..\DataServices\Bookish.DataServices.csproj" />
     <ProjectReference Include="..\Data\Bookish.Data.csproj" />
   </ItemGroup>

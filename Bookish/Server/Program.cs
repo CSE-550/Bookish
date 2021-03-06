@@ -20,7 +20,14 @@ namespace Bookish.Server
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+#if DEBUG
                     webBuilder.UseStartup<Startup>();
+#else
+                    string port = Environment.GetEnvironmentVariable("PORT");
+
+                    webBuilder.UseStartup<Startup>()
+                        .UseUrls("http://*:" + port);
+#endif
                 });
     }
 }

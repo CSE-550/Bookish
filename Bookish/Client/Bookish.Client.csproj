@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bookish\Models\Bookish.Models.csproj" />
+    <ProjectReference Include="..\Models\Bookish.Models.csproj" />
   </ItemGroup>
 
 </Project>
