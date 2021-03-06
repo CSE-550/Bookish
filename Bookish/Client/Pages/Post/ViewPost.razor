@@ -2,15 +2,13 @@
 @inject HttpClient Http
 
 
-<h3>@Model.Title</h3>
-<p>@Model.Posted_At</p>   
-<p>@Model.TotalComments Comments</p>
 <p>@Model.Body</p>
+<p>@Model.TotalComments Comments</p>
 
-
-
+<CommentList Comments="Model.Comments"></CommentList>
 @code { private PostModel Model = new PostModel() {
-        Title = "Life Span", TotalComments = 172, Body="This book is very important and talks about..."};
+        
+    };
     [Parameter]
     public int Id { get; set; }
     protected override async Task OnInitializedAsync()

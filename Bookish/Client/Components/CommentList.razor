@@ -1,0 +1,22 @@
+﻿<ul>
+    @foreach (var comment in Comments)
+    {
+        <li>
+            @comment.Body
+            @if (comment.Comments != null && comment.Comments.Count>0)
+            {
+            <CommentList Comments="comment.Comments"></CommentList>
+            }
+        </li>
+
+
+    }
+</ul>
+
+
+
+@code {
+    [Parameter]
+    public List<CommentModel> Comments { get; set; }
+}
+
