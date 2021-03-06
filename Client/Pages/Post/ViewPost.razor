@@ -7,30 +7,7 @@
 
 <CommentList Comments="Model.Comments"></CommentList>
 @code { private PostModel Model = new PostModel() {
-        Comments = new List<CommentModel>{
-            new CommentModel{
-                Body = "Text 1",
-                Comments = new List<CommentModel>{
-                    new CommentModel{Body = "Text 1.1" },
-                    new CommentModel{Body = "Text 1.2" },
-                    new CommentModel{Body = "Text 1.3",
-                        Comments = new List<CommentModel>{
-                            new CommentModel{Body = "Text 1.3.1" },
-                            new CommentModel{Body = "Text 1.3.2" },
-                            new CommentModel{Body = "Text 1.3.3" }
-                        }
-                    }
-                }
-            },
-            new CommentModel{Body = "Text 2",
-            Comments = new List<CommentModel>{
-                new CommentModel{Body = "Text 2.1" },
-                new CommentModel{Body = "Text 2.2" },
-                new CommentModel{Body = "Text 2.3" }
-            }
-            },
-            new CommentModel{Body = "Text 3" }
-        }
+        
     };
     [Parameter]
     public int Id { get; set; }
