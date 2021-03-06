@@ -1,0 +1,63 @@
+﻿@page "/frontpage"
+
+<button style="float:right">Search</button>
+<input style="float:right" placeholder="Search..." />
+
+<ul>
+    @foreach (var post in posts)
+    {
+    <dl>
+        <dt>@post.Title</dt>
+        <dd>@post.Body</dd>
+        <dd>@post.Posted_At  @post.TotalComments Comments</dd>
+        <hr />
+    </dl>
+    }
+</ul>
+
+<!--
+<dl>
+    <dt>@Model.Title</dt>
+    <dd>@Model.Body</dd>
+    <dd>@Model.Posted_At  @Model.TotalComments Comments</dd>
+    <hr />
+
+    <dt>@Model.Title</dt>
+    <dd>@Model.Body</dd>
+    <dd>@Model.Posted_At  @Model.TotalComments Comments</dd>
+    <hr />
+
+    <dt>@Model.Title</dt>
+    <dd>@Model.Body</dd>
+    <dd>@Model.Posted_At  @Model.TotalComments Comments</dd>
+    <hr />
+
+</dl>
+    -->
+
+<button style="float:center">Previous</button>
+<button style="float:center">Next</button>
+
+@code {
+
+    private IEnumerable<PostModel> posts = new[]
+    {
+            new PostModel {Title = "Rhythm of War" , TotalComments = 100, Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..." },
+            new PostModel {Title = "A Game of Thrones" , TotalComments = 345 , Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..." },
+            new PostModel {Title = "Harry Potter and the Goblet of Fire" , TotalComments = 87, Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..."},
+            new PostModel {Title = "The Count of Monte Cristo" , TotalComments = 123, Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..." },
+            new PostModel {Title = "The Prestige" , TotalComments = 59, Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..." }
+    };
+
+    /*
+    private PostModel Model = new PostModel()
+    {
+        Title = "Life Span",
+        TotalComments = 172,
+        Body = "This book is very important and talks about..."
+    };
+    [Parameter]
+    public int Id { get; set; }
+    */
+
+}
