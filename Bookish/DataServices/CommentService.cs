@@ -83,7 +83,7 @@ namespace Bookish.DataServices
         /// </returns>
         public List<CommentModel> GetPostComments(int postId, int skip, int take)
         {
-            return this.CommentModelQueryable(com => com.Commented_OnId == postId)
+            return this.CommentModelQueryable(com => com.Commented_OnId == postId && com.Commented_UnderId == null)
                 .Skip(skip)
                 .Take(take)
                 .ToList();
@@ -101,6 +101,7 @@ namespace Bookish.DataServices
         public List<CommentModel> GetSubComments(int commentId, int skip, int take)
         {
             return this.CommentModelQueryable(com => com.Commented_UnderId == commentId)
+                .OrderBy(com => com.Id)
                 .Skip(skip)
                 .Take(take)
                 .ToList();

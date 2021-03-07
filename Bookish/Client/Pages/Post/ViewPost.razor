@@ -1,24 +1,37 @@
 ﻿@page  "/Post/View/{Id:int}"
 @inject HttpClient Http
 
+@using Bookish.Client.Shared.Components
 
-<p>@Model.Body</p>
-<p>@Model.TotalComments Comments</p>
+@if (Model != null)
+{
 
-<CommentList Comments="Model.Comments"></CommentList>
-@code { private PostModel Model = new PostModel() {
-        
-    };
-    [Parameter]
-    public int Id { get; set; }
-    protected override async Task OnInitializedAsync()
+    <div class="columns">
+        <div class="column">
+            <h1 class="title">@Model.Title</h1>
+        </div>
+    </div>
+    <div class="columns">
+        <div class="column">
+            <p>@Model.Body</p>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <textarea class="textarea" @bind="@CommentBody"></textarea>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column">
+            <button class="button is-success" @onclick="CreateComment">Add Comment</button>
+        </div>
+    </div>
+
+    @foreach (CommentModel comment in Model.Comments)
     {
-
-        var post = await Http.GetFromJsonAsync<PostModel>("/api/post?id="+Id);
-        if (post != null)
-        {
-            Model = post;
-        }
+        <Comment_Component CommentModel="comment"></Comment_Component>
     }
 
 }

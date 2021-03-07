@@ -35,7 +35,7 @@ namespace Bookish.Server.Controllers
         /// <returns>
         /// The newly created postmodel
         /// </returns>
-        [HttpPost]
+        [HttpPut]
         public PostModel Put([FromServices] IPostService postService, [FromBody] PostModel postModel)
         {
             return postService.CreatePost(postModel);

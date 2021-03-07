@@ -1,63 +1,22 @@
-﻿@page "/frontpage"
+﻿@page "/"
 
-<button style="float:right">Search</button>
-<input style="float:right" placeholder="Search..." />
-
-<ul>
-    @foreach (var post in posts)
+@if (Posts.Count() == 0 && !IsLoading)
+{
+    <div class="columns has-text-centered">
+        <div class="column">
+            <h3 class="title">Sorry, no posts available</h3>
+        </div>
+    </div>
+}
+else
+{
+    @foreach (PostListModel post in Posts)
     {
-    <dl>
-        <dt>@post.Title</dt>
-        <dd>@post.Body</dd>
-        <dd>@post.Posted_At  @post.TotalComments Comments</dd>
-        <hr />
-    </dl>
+        <div class="columns post-item" @onclick="@(() => OpenPost(post))">
+            <div class="column">
+                <h3 class="is-size-4 is-bold">@post.Title</h3>
+                <span>posted by anon on @post.Posted_At.ToString("MM/dd/yy") with @post.TotalComments Comments </span>
+            </div>
+        </div>
     }
-</ul>
-
-<!--
-<dl>
-    <dt>@Model.Title</dt>
-    <dd>@Model.Body</dd>
-    <dd>@Model.Posted_At  @Model.TotalComments Comments</dd>
-    <hr />
-
-    <dt>@Model.Title</dt>
-    <dd>@Model.Body</dd>
-    <dd>@Model.Posted_At  @Model.TotalComments Comments</dd>
-    <hr />
-
-    <dt>@Model.Title</dt>
-    <dd>@Model.Body</dd>
-    <dd>@Model.Posted_At  @Model.TotalComments Comments</dd>
-    <hr />
-
-</dl>
-    -->
-
-<button style="float:center">Previous</button>
-<button style="float:center">Next</button>
-
-@code {
-
-    private IEnumerable<PostModel> posts = new[]
-    {
-            new PostModel {Title = "Rhythm of War" , TotalComments = 100, Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..." },
-            new PostModel {Title = "A Game of Thrones" , TotalComments = 345 , Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..." },
-            new PostModel {Title = "Harry Potter and the Goblet of Fire" , TotalComments = 87, Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..."},
-            new PostModel {Title = "The Count of Monte Cristo" , TotalComments = 123, Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..." },
-            new PostModel {Title = "The Prestige" , TotalComments = 59, Body = "Lorem ipsum dolor sit amet, consectetur adipiscing elit..." }
-    };
-
-    /*
-    private PostModel Model = new PostModel()
-    {
-        Title = "Life Span",
-        TotalComments = 172,
-        Body = "This book is very important and talks about..."
-    };
-    [Parameter]
-    public int Id { get; set; }
-    */
-
 }

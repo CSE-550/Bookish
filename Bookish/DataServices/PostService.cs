@@ -46,7 +46,8 @@ namespace Bookish.DataServices
                 .Select(post => new PostListModel { 
                     Id = post.Id,
                     Posted_At = post.Posted_At,
-                    Title = post.Title
+                    Title = post.Title,
+                    TotalComments = context.Comments.Where(com => com.Commented_On.Id == post.Id).Count()
                 })
                 .ToList();
         }
@@ -71,7 +72,12 @@ namespace Bookish.DataServices
                 })
                 .FirstOrDefault();
 
-            postModel.Comments = commentService.GetPostComments(id, 0, 50);
+            postModel.Comments = commentService.GetPostComments(id, 0, 5);
+
+            postModel.Comments.ForEach(com => {
+                com.Comments = commentService.GetSubComments(com.Id, 0, 5);
+                com.Comments.ForEach(subCom => subCom.Comments = commentService.GetSubComments(subCom.Id, 0, 5));
+            });
 
             return postModel;
         }

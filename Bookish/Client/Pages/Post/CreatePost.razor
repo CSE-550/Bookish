@@ -1,0 +1,22 @@
+﻿@page "/Post/Create"
+
+<EditForm Model="@Post" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="field">
+        <label class="label">Post Title</label>
+        <div class="control">
+            <InputText id="name" class="input" @bind-Value="Post.Title" />
+        </div>
+    </div>
+
+    <div class="field">
+        <label class="label">Body</label>
+        <div class="control">
+            <InputTextArea @bind-Value="Post.Body" class="textarea" />
+        </div>
+    </div>
+
+    <button class="button is-success" type="submit">Create Post</button>
+</EditForm>

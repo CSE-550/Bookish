@@ -11,5 +11,7 @@ namespace Bookish.Models
         public string Title { get; set; }
 
         public DateTime Posted_At { get; set; }
+
+        public int TotalComments { get; set; }
     }
 }
