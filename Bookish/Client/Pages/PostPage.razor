@@ -1,0 +1,28 @@
+﻿@page "/postpage"
+
+    <meta name="theme-color" content="red">
+    <meta name="description" content="The social network site for readers!">
+    <meta name="keywords" content="books, social">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="imagetoolbar" content="yes">
+    <meta http-equiv="Cache-control" content="public">
+    <title>Bookish | Post</title>
+    
+    <h1>Post</h1>
+
+    <p>Read anything interesting recently? Write about it here!</p>
+    <br />
+
+    <textarea id="postbox" name="postbox" rows="4" cols="50">
+    </textarea>
+    <br />
+    
+    <button class="btn btn-primary" @onclick="SubmitPost">Post</button>
+
+    @code
+    {
+        private void SubmitPost()
+        {
+
+        }
+    }
