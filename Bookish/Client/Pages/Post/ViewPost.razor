@@ -17,17 +17,21 @@
         </div>
     </div>
 
-    <div class="columns">
-        <div class="column">
-            <textarea class="textarea" @bind="@CommentBody"></textarea>
-        </div>
-    </div>
+    <AuthorizeView>
+        <Authorized>
+            <div class="columns">
+                <div class="column">
+                    <textarea class="textarea" @bind="@CommentBody"></textarea>
+                </div>
+            </div>
 
-    <div class="columns">
-        <div class="column">
-            <button class="button is-success" @onclick="CreateComment">Add Comment</button>
-        </div>
-    </div>
+            <div class="columns">
+                <div class="column">
+                    <button class="button is-success" @onclick="CreateComment">Add Comment</button>
+                </div>
+            </div>
+        </Authorized>
+    </AuthorizeView>
 
     @foreach (CommentModel comment in Model.Comments)
     {

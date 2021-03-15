@@ -1,5 +1,6 @@
 using Bookish.Data;
 using Bookish.DataServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace Bookish.Server
 {
@@ -45,14 +48,35 @@ namespace Bookish.Server
                     TrustServerCertificate = true
                 };
                 connectionString = builder.ToString();
-            } 
+            }
             else
             {
                 connectionString = Configuration.GetConnectionString("DefaultConnection");
             }
 
             services.AddDbContext<Context>(opt => opt.UseNpgsql(connectionString, npgsql => npgsql.MigrationsAssembly("Bookish.Data")));
+            IConfigurationSection jwtSettings = Configuration.GetSection("JwtSettings");
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+                    ValidAudience = jwtSettings.GetSection("validAudience").Value,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
+                };
+            });
             services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -77,8 +101,9 @@ namespace Bookish.Server
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
+            app.UseAuthentication();
             app.UseRouting();
-
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

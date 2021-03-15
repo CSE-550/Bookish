@@ -1,0 +1,53 @@
+﻿@page "/login"
+
+<div class="columns">
+    <div class="column">
+        <h1 class="is-size-3">
+            Login
+        </h1>
+    </div>
+</div>
+
+@if (DisplayError)
+{
+<div class="columns">
+    <div class="column">
+        <h1 class="is-size-3 has-text-danger">
+            Failed to login
+        </h1>
+    </div>
+</div>
+}
+
+<div class="columns">
+    <div class="column">
+        <EditForm Model="@UserLoginModel" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="field">
+                <label class="label">Username</label>
+                <div class="control">
+                    <InputText id="name" class="input" @bind-Value="UserLoginModel.Username" />
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Password</label>
+                <div class="control">
+                    <InputText id="password" class="input" type="password" @bind-Value="UserLoginModel.Password" />
+                </div>
+            </div>
+
+            <button class="button is-success" type="submit">Login</button>
+        </EditForm>
+    </div>
+</div>
+
+<div class="column">
+    <div class="column">
+        <p>
+            Don't have an account? <a href="">Sign up here!</a>
+        </p>
+    </div>
+</div>
