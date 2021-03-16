@@ -7,6 +7,7 @@ namespace Bookish.DataServices
 {
     public interface IAuthenticationService
     {
+        void SignUp(UserSignUpModel signUpModel);
         AuthUserModel Login(UserLoginModel loginModel);
         void Logout();
     }
