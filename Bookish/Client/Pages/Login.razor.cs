@@ -1,6 +1,8 @@
 ﻿using Blazored.LocalStorage;
+using Bookish.Client.Services;
 using Bookish.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +24,9 @@ namespace Bookish.Client.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
+        [Inject]
+        public AuthenticationStateProvider AuthProvider { get; set; }
+
         protected UserLoginModel UserLoginModel { get; set; }
 
         protected bool DisplayError { get; set; }
@@ -32,7 +37,7 @@ namespace Bookish.Client.Pages
             base.OnInitialized();
         }
 
-        public async void HandleValidSubmit()
+        public async Task HandleValidSubmit()
         {
             HttpResponseMessage loginResponse = await HttpClient.PostAsJsonAsync("/api/login", UserLoginModel); 
 
@@ -45,7 +50,8 @@ namespace Bookish.Client.Pages
             else
             {
                 DisplayError = false;
-                _ = LocalStorage.SetItemAsync<string>("authToken", authUser.Token);
+                AuthStateProvider authProvider = AuthProvider as AuthStateProvider;
+                await authProvider.NotifyUserLogin(authUser);
                 NavigationManager.NavigateTo("/");
             }
         }

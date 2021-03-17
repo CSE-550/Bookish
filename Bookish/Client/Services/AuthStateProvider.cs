@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Bookish.Models;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
@@ -57,11 +58,14 @@ namespace Bookish.Client.Services
             return Convert.FromBase64String(base64);
         }
 
-        public void NotifyUserAuthentication(string email)
+        public async Task NotifyUserLogin(AuthUserModel authUser)
         {
-            var authenticatedUser = new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, email) }, "jwtAuthType"));
-            var authState = Task.FromResult(new AuthenticationState(authenticatedUser));
-            NotifyAuthenticationStateChanged(authState);
+            await LocalStorage.SetItemAsync<string>("authToken", authUser.Token);
+            await LocalStorage.SetItemAsync<string>("user", authUser.Username);
+
+            AuthenticationState authState = await GetAuthenticationStateAsync();
+
+            NotifyAuthenticationStateChanged(Task.FromResult(authState));
         }
 
         public void NotifyUserLogout()
