@@ -13,6 +13,15 @@ namespace Bookish.Server.Controllers
     [ApiController]
     public class SignUpController : ControllerBase
     {
+        /// <summary>
+        /// Creates a new user from the signup model if the
+        /// model is unique
+        /// </summary>
+        /// <param name="authService">The auth service for creating the new user</param>
+        /// <param name="signUpModel">The sign up model</param>
+        /// <returns>
+        /// An IActionResult of the success of failure of generating the user
+        /// </returns>
         [HttpPut]
         public IActionResult Put([FromServices] IAuthenticationService authService, [FromBody] UserSignUpModel signUpModel)
         {

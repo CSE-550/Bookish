@@ -14,9 +14,6 @@ namespace Bookish.Client.Shared
         [Inject]
         public AuthenticationStateProvider AuthProvider { get; set; }
 
-        [Inject]
-        public ILocalStorageService LocalStorage { get; set; }
-
         private bool IsActive = false;
 
         public string UserName { get; set; }
@@ -29,7 +26,6 @@ namespace Bookish.Client.Shared
 
         public async Task Logout()
         {
-            await LocalStorage.RemoveItemAsync("authToken");
             AuthStateProvider authProvider = AuthProvider as AuthStateProvider;
             authProvider.NotifyUserLogout();
         }

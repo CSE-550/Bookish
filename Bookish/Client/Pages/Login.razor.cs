@@ -27,8 +27,14 @@ namespace Bookish.Client.Pages
         [Inject]
         public AuthenticationStateProvider AuthProvider { get; set; }
 
+        /// <summary>
+        /// The user login model for logging in a specified user
+        /// </summary>
         protected UserLoginModel UserLoginModel { get; set; }
 
+        /// <summary>
+        /// Display error on login
+        /// </summary>
         protected bool DisplayError { get; set; }
 
         protected override void OnInitialized()
@@ -37,16 +43,28 @@ namespace Bookish.Client.Pages
             base.OnInitialized();
         }
 
+        /// <summary>
+        /// On form valid submit. Attempt to login
+        /// the user and notify the application of the 
+        /// new login user
+        /// </summary>
+        /// <returns>
+        /// Async Task of logging in a user
+        /// </returns>
         public async Task HandleValidSubmit()
         {
+            // Make request to login the user
             HttpResponseMessage loginResponse = await HttpClient.PostAsJsonAsync("/api/login", UserLoginModel); 
 
+            // Get the auth user model
             AuthUserModel authUser = await loginResponse.Content.ReadFromJsonAsync<AuthUserModel>();
 
+            // If unsuccesful display an error
             if (authUser == null || authUser.Token == null || authUser.Token == "")
             {
                 DisplayError = true;
             }
+            // Otherwise set the auth provider and notify the rest of the app
             else
             {
                 DisplayError = false;
