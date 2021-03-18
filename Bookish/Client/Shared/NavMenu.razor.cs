@@ -13,6 +13,8 @@ namespace Bookish.Client.Shared
     {
         [Inject]
         public AuthenticationStateProvider AuthProvider { get; set; }
+        [Inject]
+        public ILocalStorageService LocalStorage { get; set; }
 
         private bool IsActive = false;
 
