@@ -1,0 +1,40 @@
+﻿@page "/signup"
+
+<div class="columns">
+    <div class="column">
+        <EditForm Model="@UserSignUpModel" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                    <InputText id="email" class="input" @bind-Value="UserSignUpModel.Email" />
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Username</label>
+                <div class="control">
+                    <InputText id="name" class="input" @bind-Value="UserSignUpModel.Username" />
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Password</label>
+                <div class="control">
+                    <InputText id="password" class="input" type="password" @bind-Value="UserSignUpModel.Password" />
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Password ReEntry</label>
+                <div class="control">
+                    <InputText id="password" class="input" type="password" @bind-Value="UserSignUpModel.PasswordReEntry" />
+                </div>
+            </div>
+
+            <button class="button is-success" type="submit">Login</button>
+        </EditForm>
+    </div>
+</div>

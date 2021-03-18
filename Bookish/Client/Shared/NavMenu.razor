@@ -17,25 +17,43 @@
             <NavLink class="navbar-item" href="/">
                 Front Page
             </NavLink>
-            <NavLink class="navbar-item" href="Post/Create">
-                Create Post
-            </NavLink>
+            <AuthorizeView>
+                <Authorized>
+                    <NavLink class="navbar-item" href="Post/Create">
+                        Create Post
+                    </NavLink>
+                </Authorized>
+            </AuthorizeView>
         </div>
 
         <div class="navbar-end">
             <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary">
-                        <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light">
-                        Log in
-                    </a>
-                </div>
+                <AuthorizeView>
+                    <Authorized>
+                        <div class="buttons">
+                            <NavLink class="navbar-item" href="/">
+                                @UserName
+                            </NavLink>
+                            <label>
+                                |
+                            </label>
+                            <NavLink class="navbar-item" @onclick="Logout">
+                                Logout
+                            </NavLink>
+                        </div>
+                    </Authorized>
+                    <NotAuthorized>
+                        <div class="buttons">
+                            <NavLink class="button is-primary" href="/SignUp">
+                                <strong>Sign up</strong>
+                            </NavLink>
+                            <NavLink class="button is-default" href="/Login">
+                                Login
+                            </NavLink>
+                        </div>
+                    </NotAuthorized>
+                </AuthorizeView>
             </div>
         </div>
     </div>
 </nav>
-@code {
-    private bool IsActive = false;
-}
