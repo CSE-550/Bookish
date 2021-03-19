@@ -12,6 +12,9 @@ namespace Bookish.Client.Shared
     public partial class NavMenu : ComponentBase
     {
         [Inject]
+        public ILocalStorageService LocalStorage { get; set; }
+
+        [Inject]
         public AuthenticationStateProvider AuthProvider { get; set; }
 
         private bool IsActive = false;
