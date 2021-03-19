@@ -17,9 +17,9 @@ namespace Bookish.Client.Shared
         [Inject]
         public AuthenticationStateProvider AuthProvider { get; set; }
 
-        private bool IsActive = false;
-
         public string UserName { get; set; }
+
+        private bool IsActive = false;
 
         protected override async Task OnInitializedAsync()
         {

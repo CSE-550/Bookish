@@ -70,7 +70,7 @@ namespace Bookish.Client.Pages
                 DisplayError = false;
                 AuthStateProvider authProvider = AuthProvider as AuthStateProvider;
                 await authProvider.NotifyUserLogin(authUser);
-                NavigationManager.NavigateTo("/");
+                NavigationManager.NavigateTo("/", true);
             }
         }
 
