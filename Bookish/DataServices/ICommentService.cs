@@ -15,6 +15,6 @@ namespace Bookish.DataServices
 
         List<CommentModel> GetSubComments(int commentId, int skip, int take);
 
-        CommentModel CreateComment(CommentModel comment);
+        CommentModel CreateComment(AuthUserModel authUser, CommentModel comment);
     }
 }

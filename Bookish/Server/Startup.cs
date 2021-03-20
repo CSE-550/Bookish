@@ -1,5 +1,6 @@
 using Bookish.Data;
 using Bookish.DataServices;
+using Bookish.Server.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -104,6 +105,7 @@ namespace Bookish.Server
             app.UseAuthentication();
             app.UseRouting();
             app.UseAuthorization();
+            app.UseMiddleware<AuthMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

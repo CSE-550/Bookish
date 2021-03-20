@@ -42,7 +42,8 @@ namespace Bookish.Server.Controllers
         [HttpPut]
         public CommentModel Put([FromServices] ICommentService commentService, [FromBody] CommentModel commentModel)
         {
-            return commentService.CreateComment(commentModel);
+            AuthUserModel authUser = (AuthUserModel)this.HttpContext.Items["authUserModel"];
+            return commentService.CreateComment(authUser, commentModel);
         }
     }
 }

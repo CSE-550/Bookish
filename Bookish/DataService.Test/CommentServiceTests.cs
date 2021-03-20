@@ -27,6 +27,11 @@ namespace DataService.Test
         private CommentService commentService;
 
         /// <summary>
+        /// The user generating the comment
+        /// </summary>
+        private AuthUserModel authUser;
+
+        /// <summary>
         /// Init db and services
         /// </summary>
         [OneTimeSetUp]
@@ -38,6 +43,15 @@ namespace DataService.Test
             context = new Context(options);
             commentService = new CommentService(context);
             postService = new PostService(context, commentService);
+            authUser = new AuthUserModel
+            {
+                Id = 1,
+                Username = "ryanenglish"
+            };
+            context.Users.Add(new User { 
+                Id = authUser.Id,
+                Username = authUser.Username
+            });
         }
 
         /// <summary>
@@ -65,7 +79,7 @@ namespace DataService.Test
                 Body = "This is a comment on a post"
             };
 
-            commentModel = commentService.CreateComment(commentModel);
+            commentModel = commentService.CreateComment(authUser, commentModel);
 
             Comment comment = context.Comments
                 .Where(com => com.Id == commentModel.Id)
@@ -73,6 +87,7 @@ namespace DataService.Test
 
             // Verify the comment has the correct information
             Assert.AreEqual(commentModel.Body, comment.Body);
+            Assert.AreEqual(commentModel.Commented_By, comment.Commented_By.Username);
             Assert.AreEqual(commentModel.Post_Id, comment.Commented_OnId);
         }
 
@@ -89,7 +104,7 @@ namespace DataService.Test
                 Body = "This is a comment"
             };
 
-            commentModel = commentService.CreateComment(commentModel);
+            commentModel = commentService.CreateComment(authUser, commentModel);
 
             // Create sub level comment
             CommentModel subCommentModel = new CommentModel
@@ -98,7 +113,7 @@ namespace DataService.Test
                 Body = "This is a sub comment"
             };
 
-            subCommentModel = commentService.CreateComment(subCommentModel);
+            subCommentModel = commentService.CreateComment(authUser, subCommentModel);
 
             Comment comment = context.Comments
                 .Where(com => com.Id == subCommentModel.Id)
@@ -106,6 +121,7 @@ namespace DataService.Test
 
             // Verify comment
             Assert.AreEqual(subCommentModel.Body, comment.Body);
+            Assert.AreEqual(subCommentModel.Commented_By, comment.Commented_By.Username);
             Assert.AreEqual(subCommentModel.Parent_Id, comment.Commented_UnderId);
         }
 

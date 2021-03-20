@@ -46,5 +46,22 @@ namespace Bookish.Client.Shared.Components
             StateHasChanged();
         }
 
+        protected string GetTimeSincePost()
+        {
+            TimeSpan timeSince = DateTime.Now - CommentModel.Commented_At;
+            if (timeSince.TotalHours < 1)
+            {
+                return string.Format("{0:mm} min ago", timeSince);
+            } 
+            else if (timeSince.TotalHours < 24)
+            {
+                return string.Format("{0:hh} hours ago", timeSince);
+            }
+            else
+            {
+                return string.Format("{0:dd} days ago", timeSince);
+            }
+        }
+
     }
 }

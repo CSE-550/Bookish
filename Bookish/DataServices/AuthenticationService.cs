@@ -53,6 +53,8 @@ namespace Bookish.DataServices
 
             return new AuthUserModel
             {
+                Id = user.Id,
+                Email = user.Email,
                 Username = user.Username,
                 // Token is generated server side
                 Token = ""

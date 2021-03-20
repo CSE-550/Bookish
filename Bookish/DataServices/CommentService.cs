@@ -43,6 +43,7 @@ namespace Bookish.DataServices
                     Id = com.com.Id,
                     Parent_Id = com.com.Commented_UnderId,
                     Post_Id = com.com.Commented_OnId,
+                    Commented_By = com.com.Commented_By.Username,
                     TotalComments = com.children.Count()
                 });
         }
@@ -54,12 +55,13 @@ namespace Bookish.DataServices
         /// <returns>
         /// The newly created comment model
         /// </returns>
-        public CommentModel CreateComment(CommentModel comment)
+        public CommentModel CreateComment(AuthUserModel authUser, CommentModel comment)
         {
             // TODO: Verify information
             Comment commentDB = new Comment
             {
                 Body = comment.Body,
+                Commented_ById = authUser.Id,
                 Commented_At = DateTime.Now,
                 Commented_UnderId = comment.Parent_Id,
                 Commented_OnId = comment.Post_Id,

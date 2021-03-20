@@ -20,5 +20,9 @@ namespace Bookish.Data
         public int? Commented_UnderId { get; set; }
         [ForeignKey("Commented_UnderId")]
         public virtual Comment Commented_Under { get; set; }
+
+        public int? Commented_ById { get; set; }
+        [ForeignKey("Commented_ById")]
+        public User Commented_By { get; set; }
     }
 }
