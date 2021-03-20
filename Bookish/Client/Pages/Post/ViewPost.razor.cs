@@ -34,8 +34,9 @@ namespace Bookish.Client.Pages.Post
             });
 
             Model.Comments.Add(await response.Content.ReadFromJsonAsync<CommentModel>());
-
+            CommentBody = "";
             StateHasChanged();
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Bookish.DataServices;
 using Bookish.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -35,6 +36,7 @@ namespace Bookish.Server.Controllers
         /// <returns>
         /// The newly created postmodel
         /// </returns>
+        [Authorize]
         [HttpPut]
         public PostModel Put([FromServices] IPostService postService, [FromBody] PostModel postModel)
         {
