@@ -45,6 +45,11 @@ namespace Bookish.Models
         public int TotalComments { get; set; }
 
         /// <summary>
+        /// The user who made the comment
+        /// </summary>
+        public string Commented_By { get; set; }
+
+        /// <summary>
         /// A collection of the comments comments, this
         /// is incomplete at first glance for large comment trees
         /// </summary>

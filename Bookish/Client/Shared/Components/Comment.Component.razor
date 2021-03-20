@@ -5,7 +5,7 @@
 <div class="columns is-multiline box mb-5">
     <div class="column is-full">
         <span class="is-size-7">
-            anon at @CommentModel.Commented_At.ToString("MM/dd/yy")
+            @(CommentModel.Commented_By ?? "anon")  <span title="@CommentModel.Commented_At.ToString()">@GetTimeSincePost()</span>
         </span>
     </div>
     <div class="column is-full">
