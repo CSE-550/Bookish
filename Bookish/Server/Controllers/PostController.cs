@@ -40,7 +40,8 @@ namespace Bookish.Server.Controllers
         [HttpPut]
         public PostModel Put([FromServices] IPostService postService, [FromBody] PostModel postModel)
         {
-            return postService.CreatePost(postModel);
+            AuthUserModel authUser = (AuthUserModel)this.HttpContext.Items["authUserModel"];
+            return postService.CreatePost(authUser, postModel);
         }
     }
 }

@@ -15,7 +15,7 @@ else
         <div class="columns post-item" @onclick="@(() => OpenPost(post))">
             <div class="column">
                 <h3 class="is-size-4 is-bold">@post.Title</h3>
-                <span>posted by anon on @post.Posted_At.ToString("MM/dd/yy") with @post.TotalComments Comments </span>
+                <span>posted by @post.Posted_By on @post.Posted_At.ToString("MM/dd/yy") with @post.TotalComments Comments </span>
             </div>
         </div>
     }

@@ -15,6 +15,6 @@ namespace Bookish.DataServices
 
         PostModel GetPost(int id);
 
-        PostModel CreatePost(PostModel postModel);
+        PostModel CreatePost(AuthUserModel authUser, PostModel postModel);
     }
 }

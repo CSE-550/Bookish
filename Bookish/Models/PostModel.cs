@@ -16,11 +16,6 @@ namespace Bookish.Models
         public string Body { get; set; }
 
         /// <summary>
-        /// The total amount of comments a post has
-        /// </summary>
-        public int TotalComments { get; set; }
-
-        /// <summary>
         /// The top level comments on the post
         /// </summary>
         public List<CommentModel> Comments { get; set; }
