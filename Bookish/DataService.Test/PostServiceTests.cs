@@ -25,6 +25,10 @@ namespace DataService.Test
         /// The comment service for CRUD
         /// </summary>
         private CommentService commentService;
+        /// <summary>
+        /// The user generating the post
+        /// </summary>
+        private AuthUserModel authUser;
 
         /// <summary>
         /// Init the test by creating services and context
@@ -38,6 +42,15 @@ namespace DataService.Test
             context = new Context(options);
             commentService = new CommentService(context);
             postService = new PostService(context, commentService);
+            authUser = new AuthUserModel
+            {
+                Id = 1,
+                Username = "ryanenglish"
+            };
+            context.Users.Add(new User { 
+                Id = authUser.Id,
+                Username = authUser.Username
+            });
         }
 
         /// <summary>
@@ -53,12 +66,13 @@ namespace DataService.Test
                 Posted_At = DateTime.Now,
             };
 
-            postService.CreatePost(model);
+            postService.CreatePost(authUser, model);
 
             Post post = context.Posts.FirstOrDefault();
 
             Assert.AreEqual(model.Title, post.Title);
             Assert.AreEqual(model.Body, post.Body);
+            Assert.AreEqual(model.Posted_By, post.Posted_By.Username);
         }
 
         /// <summary>
