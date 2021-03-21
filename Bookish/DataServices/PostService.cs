@@ -47,6 +47,7 @@ namespace Bookish.DataServices
                     Id = post.Id,
                     Posted_At = post.Posted_At,
                     Title = post.Title,
+                    Posted_By = post.Posted_By.Username,
                     TotalComments = context.Comments.Where(com => com.Commented_On.Id == post.Id).Count()
                 })
                 .ToList();
@@ -66,6 +67,7 @@ namespace Bookish.DataServices
                 .Select(post => new PostModel { 
                     Id = post.Id,
                     Body = post.Body,
+                    Posted_By = post.Posted_By.Username,
                     Posted_At = post.Posted_At,
                     Title = post.Title,
                     TotalComments = post.Comments.Count()
@@ -89,13 +91,14 @@ namespace Bookish.DataServices
         /// <returns>
         /// The newly created post as a PostModel
         /// </returns>
-        public PostModel CreatePost(PostModel postModel)
+        public PostModel CreatePost(AuthUserModel authUser, PostModel postModel)
         {
             Post post = new Post
             {
                 Title = postModel.Title,
                 Body = postModel.Body,
-                Posted_At = DateTime.Now
+                Posted_At = DateTime.Now,
+                Posted_ById = authUser.Id
             };
 
             context.Posts.Add(post);

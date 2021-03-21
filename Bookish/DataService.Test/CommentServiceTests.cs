@@ -70,7 +70,7 @@ namespace DataService.Test
                 Posted_At = DateTime.Now,
             };
 
-            model = postService.CreatePost(model);
+            model = postService.CreatePost(authUser, model);
 
             // Add a comment under the post
             CommentModel commentModel = new CommentModel
