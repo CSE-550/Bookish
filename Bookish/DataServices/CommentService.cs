@@ -28,11 +28,11 @@ namespace Bookish.DataServices
         /// <returns>
         /// A CommentModel queryable
         /// </returns>
-        private IQueryable<CommentModel> CommentModelQueryable(Expression<Func<Comment, bool>> predicate)
+        public IQueryable<CommentModel> CommentModelQuery(IQueryable<Comment> commentQuery)
         {
-            return context.Comments
-                .Where(predicate)
-                .Select(com => new { 
+            return commentQuery
+                .Select(com => new
+                {
                     com,
                     children = context.Comments.Where(c => c.Commented_UnderId == com.Id)
                 })
@@ -70,8 +70,21 @@ namespace Bookish.DataServices
             context.Comments.Add(commentDB);
             context.SaveChanges();
 
-            return this.CommentModelQueryable(com => com.Id == commentDB.Id)
+            return this.CommentModelQuery(context.Comments.Where(com => com.Id == commentDB.Id))
                 .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets a list of comments model from a given queryable
+        /// </summary>
+        /// <param name="commentQuery">The queryable to convert to models</param>
+        /// <returns>
+        /// A list of comment models
+        /// </returns>
+        public List<CommentModel> GetCommentModels(IQueryable<Comment> commentQuery)
+        {
+            return CommentModelQuery(commentQuery)
+                .ToList();
         }
 
         /// <summary>
@@ -85,7 +98,7 @@ namespace Bookish.DataServices
         /// </returns>
         public List<CommentModel> GetPostComments(int postId, int skip, int take)
         {
-            return this.CommentModelQueryable(com => com.Commented_OnId == postId && com.Commented_UnderId == null)
+            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_OnId == postId && com.Commented_UnderId == null))
                 .Skip(skip)
                 .Take(take)
                 .ToList();
@@ -102,7 +115,7 @@ namespace Bookish.DataServices
         /// </returns>
         public List<CommentModel> GetSubComments(int commentId, int skip, int take)
         {
-            return this.CommentModelQueryable(com => com.Commented_UnderId == commentId)
+            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_UnderId == commentId))
                 .OrderBy(com => com.Id)
                 .Skip(skip)
                 .Take(take)

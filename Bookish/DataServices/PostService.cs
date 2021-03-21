@@ -40,9 +40,23 @@ namespace Bookish.DataServices
             }
 
             // TODO: Verify counts and order the posts
-            return context.Posts
-                .Skip(skip)
-                .Take(countPerPage)
+            return GetPostListModels(
+                context.Posts
+                    .Skip(skip)
+                    .Take(countPerPage)
+            );
+        }
+
+        /// <summary>
+        /// Gets a list of postlistmodels from a queryable
+        /// </summary>
+        /// <param name="postQuery">The post query to convert</param>
+        /// <returns>
+        /// A list of post list models
+        /// </returns>
+        public List<PostListModel> GetPostListModels(IQueryable<Post> postQuery) 
+        {
+            return postQuery
                 .Select(post => new PostListModel { 
                     Id = post.Id,
                     Posted_At = post.Posted_At,

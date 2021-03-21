@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DataService.Test
+namespace Bookish.DataService.Test
 {
     [TestFixture]
     public class CommentServiceTests
@@ -34,7 +34,7 @@ namespace DataService.Test
         /// <summary>
         /// Init db and services
         /// </summary>
-        [OneTimeSetUp]
+        [SetUp]
         public void Init()
         {
             DbContextOptions<Context> options = new DbContextOptionsBuilder<Context>()
@@ -52,6 +52,16 @@ namespace DataService.Test
                 Id = authUser.Id,
                 Username = authUser.Username
             });
+        }
+        
+        /// <summary>
+        /// Disposes the database after every test
+        /// </summary>
+        [TearDown]
+        public void Dispose()
+        {
+            context.Database.EnsureDeleted();
+            context.Dispose();
         }
 
         /// <summary>

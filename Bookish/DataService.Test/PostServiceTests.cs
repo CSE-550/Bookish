@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DataService.Test
+namespace Bookish.DataService.Test
 {
     [TestFixture]
     public class PostServiceTests
@@ -33,7 +33,7 @@ namespace DataService.Test
         /// <summary>
         /// Init the test by creating services and context
         /// </summary>
-        [OneTimeSetUp]
+        [SetUp]
         public void Init()
         {
             DbContextOptions<Context> options = new DbContextOptionsBuilder<Context>()
@@ -54,6 +54,16 @@ namespace DataService.Test
         }
 
         /// <summary>
+        /// Disposes the database after every test
+        /// </summary>
+        [TearDown]
+        public void Dispose()
+        {
+            context.Database.EnsureDeleted();
+            context.Dispose();
+        }
+
+        /// <summary>
         /// Create a post and verify the information
         /// </summary>
         [TestCase]
@@ -64,6 +74,7 @@ namespace DataService.Test
                 Title = "This is a new book",
                 Body = "The body of the post",
                 Posted_At = DateTime.Now,
+                Posted_By = authUser.Username
             };
 
             postService.CreatePost(authUser, model);
@@ -76,11 +87,20 @@ namespace DataService.Test
         }
 
         /// <summary>
-        /// Read the post created above and verify the model
+        /// Create a post then read the post
         /// </summary>
         [TestCase]
         public void ReadPost()
         {
+            // Create the post
+            postService.CreatePost(authUser, new PostModel
+            {
+                Title = "This is a new book",
+                Body = "The body of the post",
+                Posted_At = DateTime.Now,
+                Posted_By = authUser.Username
+            });
+
             PostModel model = postService.GetPost(1);
             Post post = context.Posts.FirstOrDefault();
 
