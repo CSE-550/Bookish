@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Bookish.Models
 {
-    public class PostListModel
+    public class PostListModel : IListItem
     {
         /// <summary>
         /// The id of the post
