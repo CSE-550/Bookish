@@ -24,5 +24,6 @@ namespace Bookish.Models
         /// The top level comments on the post
         /// </summary>
         public List<CommentModel> Comments { get; set; }
+
     }
 }

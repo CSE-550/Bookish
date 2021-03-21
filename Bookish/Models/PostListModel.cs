@@ -13,5 +13,7 @@ namespace Bookish.Models
         public DateTime Posted_At { get; set; }
 
         public int TotalComments { get; set; }
+
+        public int Votes { get; set; }
     }
 }

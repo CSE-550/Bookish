@@ -24,5 +24,7 @@ namespace Bookish.Data
         public int? Commented_ById { get; set; }
         [ForeignKey("Commented_ById")]
         public User Commented_By { get; set; }
+
+        public int Votes { get; set; }
     }
 }

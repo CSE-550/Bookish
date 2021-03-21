@@ -12,6 +12,11 @@
         <p>
             @CommentModel.Body
         </p>
+        <AuthorizeView>
+            <Authorized>
+                <button type="submit" class="oi-thumb-up" @onclick="@(() => Vote(@CommentModel, 1))">&#x1F44D;</button><p>@CommentModel.Votes</p><button type="submit" class="oi-thumb-down" @onclick="@(() => Vote(@CommentModel, -1))">&#x1F44E;</button>
+            </Authorized>
+        </AuthorizeView>
     </div>
     <div class="column is-full">
         <div class="columns">

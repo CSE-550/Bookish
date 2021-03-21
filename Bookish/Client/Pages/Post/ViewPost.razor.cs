@@ -38,5 +38,12 @@ namespace Bookish.Client.Pages.Post
             StateHasChanged();
 
         }
+
+        protected void Vote(int vote)
+        { 
+
+            Model.Votes += vote;
+            
+        }
     }
 }

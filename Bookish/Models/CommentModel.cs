@@ -54,5 +54,7 @@ namespace Bookish.Models
         /// is incomplete at first glance for large comment trees
         /// </summary>
         public List<CommentModel> Comments { get; set; }
+
+        public int Votes { get; set; }
     }
 }
