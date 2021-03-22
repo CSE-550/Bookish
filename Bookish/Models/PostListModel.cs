@@ -26,9 +26,12 @@ namespace Bookish.Models
         /// </summary>
         public int TotalComments { get; set; }
 
+        public int Votes { get; set; }
+        
         /// <summary>
         /// The username of the user who created the post
         /// </summary>
         public string Posted_By { get; set; }
+
     }
 }

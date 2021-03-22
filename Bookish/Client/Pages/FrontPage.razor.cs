@@ -44,7 +44,7 @@ namespace Bookish.Client.Pages
             if (posts == null || posts.Count() == 0)
             {
                 IsEmpty = true;
-            } 
+            }
             else
             {
                 Posts.AddRange(posts);
@@ -64,5 +64,9 @@ namespace Bookish.Client.Pages
             LoadPosts();
         }
 
+        protected void Vote(PostListModel postListModel, int vote)
+        {
+            postListModel.Votes += vote;
+        }
     }
 }

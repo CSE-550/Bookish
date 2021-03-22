@@ -21,5 +21,7 @@ namespace Bookish.Data
 
         public ICollection<Comment> Comments { get; set; }
 
+        public int Votes { get; set; }
     }
+
 }

@@ -61,6 +61,7 @@ namespace Bookish.DataServices
                     Id = post.Id,
                     Posted_At = post.Posted_At,
                     Title = post.Title,
+                    Votes = post.Votes,
                     Posted_By = post.Posted_By.Username,
                     TotalComments = context.Comments.Where(com => com.Commented_On.Id == post.Id).Count()
                 })
@@ -84,6 +85,7 @@ namespace Bookish.DataServices
                     Posted_By = post.Posted_By.Username,
                     Posted_At = post.Posted_At,
                     Title = post.Title,
+                    Votes = post.Votes,
                     TotalComments = post.Comments.Count()
                 })
                 .FirstOrDefault();
@@ -112,6 +114,7 @@ namespace Bookish.DataServices
                 Title = postModel.Title,
                 Body = postModel.Body,
                 Posted_At = DateTime.Now,
+                Votes = 0,
                 Posted_ById = authUser.Id
             };
 
