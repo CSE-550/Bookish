@@ -1,6 +1,8 @@
-﻿using Bookish.Models;
+﻿using Bookish.Data;
+using Bookish.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Bookish.DataServices
@@ -15,6 +17,8 @@ namespace Bookish.DataServices
 
         PostModel GetPost(int id);
 
-        PostModel CreatePost(PostModel postModel);
+        PostModel CreatePost(AuthUserModel authUser, PostModel postModel);
+
+        List<PostListModel> GetPostListModels(IQueryable<Post> postQuery);
     }
 }

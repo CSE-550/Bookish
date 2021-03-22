@@ -40,14 +40,29 @@ namespace Bookish.DataServices
             }
 
             // TODO: Verify counts and order the posts
-            return context.Posts
-                .Skip(skip)
-                .Take(countPerPage)
+            return GetPostListModels(
+                context.Posts
+                    .Skip(skip)
+                    .Take(countPerPage)
+            );
+        }
+
+        /// <summary>
+        /// Gets a list of postlistmodels from a queryable
+        /// </summary>
+        /// <param name="postQuery">The post query to convert</param>
+        /// <returns>
+        /// A list of post list models
+        /// </returns>
+        public List<PostListModel> GetPostListModels(IQueryable<Post> postQuery) 
+        {
+            return postQuery
                 .Select(post => new PostListModel { 
                     Id = post.Id,
                     Posted_At = post.Posted_At,
                     Title = post.Title,
                     Votes = post.Votes,
+                    Posted_By = post.Posted_By.Username,
                     TotalComments = context.Comments.Where(com => com.Commented_On.Id == post.Id).Count()
                 })
                 .ToList();
@@ -67,6 +82,7 @@ namespace Bookish.DataServices
                 .Select(post => new PostModel { 
                     Id = post.Id,
                     Body = post.Body,
+                    Posted_By = post.Posted_By.Username,
                     Posted_At = post.Posted_At,
                     Title = post.Title,
                     Votes = post.Votes,
@@ -91,14 +107,15 @@ namespace Bookish.DataServices
         /// <returns>
         /// The newly created post as a PostModel
         /// </returns>
-        public PostModel CreatePost(PostModel postModel)
+        public PostModel CreatePost(AuthUserModel authUser, PostModel postModel)
         {
             Post post = new Post
             {
                 Title = postModel.Title,
                 Body = postModel.Body,
                 Posted_At = DateTime.Now,
-                Votes = 0
+                Votes = 0,
+                Posted_ById = authUser.Id
             };
 
             context.Posts.Add(post);

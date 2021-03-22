@@ -9,7 +9,7 @@ namespace Bookish.Models
     /// or another comment. It shows the comment and all the 
     /// children comments
     /// </summary>
-    public class CommentModel
+    public class CommentModel : IListItem
     {
         /// <summary>
         /// The identifier of the comment

@@ -17,11 +17,25 @@ namespace Bookish.DataServices
     {
         private Context context { get; set; }
 
-        public AuthenticationService(Context context)
+        private ICommentService commentService { get; set; }
+
+        private IPostService postService { get; set; }
+
+        public AuthenticationService(Context context, ICommentService commentService, IPostService postService)
         {
             this.context = context;
+            this.commentService = commentService;
+            this.postService = postService;
         }
 
+        /// <summary>
+        /// Creates a hashed password given a password and the salt
+        /// </summary>
+        /// <param name="password">The password to hash</param>
+        /// <param name="salt">The salt to get hash the password with</param>
+        /// <returns>
+        /// A hashed password
+        /// </returns>
         private string HashPassword(string password, byte[] salt) 
         { 
             return Convert.ToBase64String(KeyDerivation.Pbkdf2(
@@ -33,6 +47,13 @@ namespace Bookish.DataServices
              );
         }
 
+        /// <summary>
+        /// Logins the given user if the username and password match
+        /// </summary>
+        /// <param name="loginModel">The login model to login</param>
+        /// <returns>
+        /// The authorized user model
+        /// </returns>
         public AuthUserModel Login(UserLoginModel loginModel)
         {
             User user = context.Users
@@ -66,6 +87,10 @@ namespace Bookish.DataServices
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Creates a new user
+        /// </summary>
+        /// <param name="signUpModel">The user to sign up</param>
         public void SignUp(UserSignUpModel signUpModel)
         {
             // Validate email
@@ -104,6 +129,82 @@ namespace Bookish.DataServices
 
             context.Users.Add(user);
             context.SaveChanges();
+        }
+
+        /// <summary>
+        /// Generates an account history of posts and comments
+        /// </summary>
+        /// <param name="authUser">The authorized user to get the history for</param>
+        /// <param name="page">The page number of viewing</param>
+        /// <returns>
+        /// A list of history items
+        /// </returns>
+        public List<IListItem> History(AuthUserModel authUser, int page)
+        {
+            // Get a query of the ids in order and the types
+            var historyIds = context.Posts
+                .Where(p => p.Posted_ById == authUser.Id)
+                .Select(p => new
+                {
+                    Id = p.Id,
+                    Created = p.Posted_At,
+                    Post = true,
+                    Comment = false
+                })
+                .Union(
+                    context.Comments
+                        .Where(com => com.Commented_ById == authUser.Id)
+                        .Select(com => new
+                        {
+                            Id = com.Id,
+                            Created = com.Commented_At,
+                            Post = false,
+                            Comment = true
+                        })
+                )
+                .OrderByDescending(item => item.Created)
+                .Skip((page-1) * 25)
+                .Take(25)
+                .ToList();
+
+            // Get the comment ids we need to convert to models
+            List<int> commentIds = historyIds.Where(h => h.Comment).Select(h => h.Id).ToList();
+
+            // Setup the query to get the comments
+            IQueryable<Comment> commentQuery = context.Comments
+                .Where(com => commentIds.Contains(com.Id));
+
+            // Get the comments
+            List<CommentModel> comments = commentService.GetCommentModels(commentQuery);
+
+            // Get the post ids we need to convert to models
+            List<int> postIds = historyIds.Where(h => h.Post).Select(h => h.Id).ToList();
+
+            // Setup the query to get the comments
+            IQueryable<Post> postQuery = context.Posts
+                .Where(p => postIds.Contains(p.Id));
+
+            // Get the posts
+            List<PostListModel> posts = postService.GetPostListModels(postQuery);
+
+            // Setup the results
+            List<IListItem> historyItems = new List<IListItem>();
+
+            historyIds.ForEach(h =>
+            {
+                if (h.Post)
+                {
+                    PostListModel postModel = posts.Where(p => p.Id == h.Id).FirstOrDefault();
+                    historyItems.Add(postModel);
+                } 
+                else
+                {
+                    CommentModel commentModel = comments.Where(c => c.Id == h.Id).FirstOrDefault();
+                    historyItems.Add(commentModel);
+                }
+            });
+
+            return historyItems;
         }
     }
 }
