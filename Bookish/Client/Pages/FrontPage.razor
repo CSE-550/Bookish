@@ -1,5 +1,7 @@
 ﻿@page "/"
 
+@using Bookish.Client.Shared.Components
+
 @if (Posts.Count() == 0 && !IsLoading)
 {
     <div class="columns has-text-centered">
@@ -12,13 +14,7 @@ else
 {
     @foreach (PostListModel post in Posts)
     {
-        <div class="columns post-item">
-            <div class="column" @onclick="@(() => OpenPost(post))">
-                <h3 class="is-size-4 is-bold">@post.Title</h3>
-                <span>posted by @post.Posted_By on @post.Posted_At.ToString("MM/dd/yy") with @post.TotalComments Comments </span>
-            </div>
-            <AuthorizeView><Authorized><button type="submit" class="oi-thumb-up" @onclick="@(() => Vote(post, 1))">&#x1F44D;</button><p>@post.Votes</p><button type="submit" class="oi-thumb-down" @onclick="@(() => Vote(post, -1))">&#x1F44E;</button></Authorized></AuthorizeView>
-        </div>
+        <PostList_Component Post="post"></PostList_Component>
     }
 
     <div class="columns">

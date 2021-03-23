@@ -30,5 +30,7 @@ namespace Bookish.Data
         /// The salt for generating the password
         /// </summary>
         public byte[] Salt { get; set; }
+
+        public ICollection<Rating> Ratings { get; set; }
     }
 }

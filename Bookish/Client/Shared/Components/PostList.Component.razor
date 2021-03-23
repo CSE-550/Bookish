@@ -1,0 +1,15 @@
+﻿@namespace Bookish.Client.Shared.Components
+
+@inherits PostList
+
+@using Bookish.Client.Shared.Components
+
+<div class="columns post-item">
+    <div class="column is-1">
+        <VoteArrows_Component Model="Post.Rating" Votes="Post.Votes" PostId="Post.Id"></VoteArrows_Component>
+    </div>
+    <div class="column is-11" @onclick="@(() => OpenPost(Post))">
+        <h3 class="is-size-4 is-bold">@Post.Title</h3>
+        <span>Posted by @Post.Posted_By on @Post.Posted_At.ToString("MM/dd/yy") with @Post.TotalComments Comments </span>
+    </div>
+</div>

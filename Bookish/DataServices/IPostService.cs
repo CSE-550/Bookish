@@ -13,12 +13,12 @@ namespace Bookish.DataServices
     /// </summary>
     public interface IPostService
     {
-        List<PostListModel> GetPosts(int page, int countPerPage, string orderBy);
+        List<PostListModel> GetPosts(int page, int countPerPage, string orderBy, AuthUserModel authUser);
 
-        PostModel GetPost(int id);
+        PostModel GetPost(int id, AuthUserModel authUser);
 
         PostModel CreatePost(AuthUserModel authUser, PostModel postModel);
 
-        List<PostListModel> GetPostListModels(IQueryable<Post> postQuery);
+        List<PostListModel> GetPostListModels(IQueryable<Post> postQuery, int? authUserModel = null);
     }
 }

@@ -24,11 +24,7 @@
     <AuthorizeView>
         <Authorized>
 
-            <div class="columns">
-                <div class="column">
-                    <button type="submit" class="oi-thumb-up" @onclick="@(() => Vote(1))">&#x1F44D;</button><p>@Model.Votes</p><button type="submit" class="oi-thumb-down" @onclick="@(() => Vote(-1))">&#x1F44E;</button>
-                </div>
-            </div>
+            <VoteArrows_Component Post="Model"></VoteArrows_Component>
 
             <div class="columns">
                 <div class="column">

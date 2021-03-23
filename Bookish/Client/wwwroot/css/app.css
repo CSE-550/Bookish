@@ -3,6 +3,10 @@
     box-shadow: 4px 8px 6px 1px #e5e5e5;
 }
 
+.is-full-width {
+    width: 100% !important;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;
