@@ -1,0 +1,28 @@
+﻿@if (Posts.Count() == 0 && !IsLoading)
+{
+    <div class="columns has-text-centered">
+        <div class="column">
+            <h3 class="title">Sorry, no posts available</h3>
+        </div>
+    </div>
+}
+else
+{
+    @foreach (PostListModel post in Posts)
+    {
+        <div class="columns post-item" @onclick="@(() => OpenPost(post))">
+            <div class="column">
+                <h3 class="is-size-4 is-bold">@post.Title</h3>
+                <span>posted by @post.Posted_By on @post.Posted_At.ToString("MM/dd/yy") with @post.TotalComments Comments </span>
+            </div>
+        </div>
+    }
+
+    <div class="columns">
+        <div class="column has-text-centered">
+            <button class="button is-success" @onclick="LoadNextPage" disabled="@IsEmpty">
+                Load Next Page
+            </button>
+        </div>
+    </div>
+}

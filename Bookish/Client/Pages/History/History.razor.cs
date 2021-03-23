@@ -7,9 +7,9 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace Bookish.Client.Pages
+namespace Bookish.Client.Pages.History
 {
-    public partial class FrontPage : ComponentBase
+    public partial class History : ComponentBase
     {
         [Inject]
         public HttpClient HttpClient { get; set; }
@@ -22,7 +22,7 @@ namespace Bookish.Client.Pages
 
         protected bool IsLoading { get; set; }
 
-       protected override void OnInitialized()
+        protected override void OnInitialized()
         {
             Posts = new List<PostListModel>();
             Page = 1;
@@ -34,16 +34,18 @@ namespace Bookish.Client.Pages
         {
             IsLoading = true;
             StateHasChanged();
-            List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist?page={Page}&countPerPage={CountPerPage}&orderBy=");
+            List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist/myactivity?page={Page}&countPerPage={CountPerPage}&orderBy=");
             Posts.AddRange(posts);
             StateHasChanged();
         }
 
-        
+
         protected void LoadNextPage()
         {
-          LoadPosts();
+            LoadPosts();
         }
-
     }
 }
+
+
+
