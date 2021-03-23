@@ -11,7 +11,7 @@ namespace Bookish.Data
         public Context CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<Context>();
-            optionsBuilder.UseNpgsql("Server=localhost;port=5432;Database=Bookish;User Id=postgres;Password=1234");
+            optionsBuilder.UseNpgsql("Server=localhost;port=5432;Database=Bookish;User Id=postgres;Password=");
 
             return new Context(optionsBuilder.Options);
         }
@@ -26,5 +26,7 @@ namespace Bookish.Data
         public DbSet<Comment> Comments { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Rating> Ratings { get; set; }
     }
 }

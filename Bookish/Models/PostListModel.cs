@@ -27,8 +27,20 @@ namespace Bookish.Models
         public int TotalComments { get; set; }
 
         /// <summary>
+        /// The total number of upvotes of the current post
+        /// </summary>
+        public int Votes { get; set; }
+
+        /// <summary>
+        /// If the current authorized users rating if they
+        /// have rated it before
+        /// </summary>
+        public RatingModel Rating { get; set; }
+        
+        /// <summary>
         /// The username of the user who created the post
         /// </summary>
         public string Posted_By { get; set; }
+
     }
 }

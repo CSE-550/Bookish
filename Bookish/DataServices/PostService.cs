@@ -27,10 +27,11 @@ namespace Bookish.DataServices
         /// <param name="page">The current page for viewing</param>
         /// <param name="countPerPage">The amount of posts per page</param>
         /// <param name="orderBy">How to order the posts</param>
+        /// <param name="authUser">Current authorized user if there is one</param>
         /// <returns>
         /// A list of PostListModels
         /// </returns>
-        public List<PostListModel> GetPosts(int page, int countPerPage, string orderBy)
+        public List<PostListModel> GetPosts(int page, int countPerPage, string orderBy, AuthUserModel authUser)
         {
             int skip = (page - 1) * countPerPage;
 
@@ -43,7 +44,8 @@ namespace Bookish.DataServices
             return GetPostListModels(
                 context.Posts
                     .Skip(skip)
-                    .Take(countPerPage)
+                    .Take(countPerPage),
+                authUser?.Id
             );
         }
 
@@ -54,14 +56,20 @@ namespace Bookish.DataServices
         /// <returns>
         /// A list of post list models
         /// </returns>
-        public List<PostListModel> GetPostListModels(IQueryable<Post> postQuery) 
+        public List<PostListModel> GetPostListModels(IQueryable<Post> postQuery, int? authUserId = null) 
         {
             return postQuery
                 .Select(post => new PostListModel { 
                     Id = post.Id,
                     Posted_At = post.Posted_At,
                     Title = post.Title,
+                    Votes = post.Ratings.Where(r => r.IsUpvoted).Count(),
                     Posted_By = post.Posted_By.Username,
+                    Rating = post.Ratings.Where(r => r.User_Id == authUserId).Select(r => new RatingModel { 
+                        Id = r.Id,
+                        Post_Id = r.Post_Id,
+                        isUpvote = r.IsUpvoted
+                    }).FirstOrDefault(),
                     TotalComments = context.Comments.Where(com => com.Commented_On.Id == post.Id).Count()
                 })
                 .ToList();
@@ -71,10 +79,11 @@ namespace Bookish.DataServices
         /// Gets a complete PostModel by Id
         /// </summary>
         /// <param name="id">The id of the post for viewing</param>
+        /// <param name="authUser">Current authorized user if there is one</param>
         /// <returns>
         /// A PostModel for viewing
         /// </returns>
-        public PostModel GetPost(int id)
+        public PostModel GetPost(int id, AuthUserModel authUser)
         {
             PostModel postModel = context.Posts
                 .Where(post => post.Id == id)
@@ -84,6 +93,12 @@ namespace Bookish.DataServices
                     Posted_By = post.Posted_By.Username,
                     Posted_At = post.Posted_At,
                     Title = post.Title,
+                    Votes = post.Ratings.Where(r => r.IsUpvoted).Count(),
+                    Rating = post.Ratings.Where(r => r.User_Id == authUser.Id).Select(r => new RatingModel { 
+                        Id = r.Id,
+                        Post_Id = r.Post_Id,
+                        isUpvote = r.IsUpvoted
+                    }).FirstOrDefault(),
                     TotalComments = post.Comments.Count()
                 })
                 .FirstOrDefault();
@@ -118,7 +133,7 @@ namespace Bookish.DataServices
             context.Posts.Add(post);
             context.SaveChanges();
 
-            return this.GetPost(post.Id);
+            return this.GetPost(post.Id, null);
         }
     }
 }

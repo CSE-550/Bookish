@@ -44,6 +44,7 @@ namespace Bookish.DataServices
                     Parent_Id = com.com.Commented_UnderId,
                     Post_Id = com.com.Commented_OnId,
                     Commented_By = com.com.Commented_By.Username,
+                    Votes = com.com.Ratings.Where(r => r.IsUpvoted).Count(),
                     TotalComments = com.children.Count()
                 });
         }

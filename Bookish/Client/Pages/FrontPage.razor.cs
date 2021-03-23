@@ -22,6 +22,8 @@ namespace Bookish.Client.Pages
 
         protected bool IsLoading { get; set; }
 
+        protected bool IsEmpty { get; set; }
+
        protected override void OnInitialized()
         {
             Posts = new List<PostListModel>();
@@ -35,7 +37,15 @@ namespace Bookish.Client.Pages
             IsLoading = true;
             StateHasChanged();
             List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist?page={Page}&countPerPage={CountPerPage}&orderBy=");
-            Posts.AddRange(posts);
+            if (posts == null || posts.Count() == 0)
+            {
+                IsEmpty = true;
+            }
+            else
+            {
+                Posts.AddRange(posts);
+            }
+            IsLoading = false;
             StateHasChanged();
         }
 
@@ -44,6 +54,5 @@ namespace Bookish.Client.Pages
         {
           LoadPosts();
         }
-
     }
 }

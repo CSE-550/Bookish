@@ -79,6 +79,7 @@ namespace Bookish.Server
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IRatingService, RatingService>();
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

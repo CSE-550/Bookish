@@ -1,3 +1,27 @@
 ﻿@page "/"
 
-<Bookish.Client.Shared.Components.PostList Posts="@Posts"></Bookish.Client.Shared.Components.PostList>
+@using Bookish.Client.Shared.Components
+
+@if (Posts.Count() == 0 && !IsLoading)
+{
+    <div class="columns has-text-centered">
+        <div class="column">
+            <h3 class="title">Sorry, no posts available</h3>
+        </div>
+    </div>
+}
+else
+{
+    @foreach (PostListModel post in Posts)
+    {
+        <PostList_Component Post="post"></PostList_Component>
+    }
+
+    <div class="columns">
+        <div class="column has-text-centered">
+            <button class="button is-success" @onclick="LoadNextPage" disabled="@IsEmpty">
+                Load Next Page
+            </button>
+        </div>
+    </div>
+}

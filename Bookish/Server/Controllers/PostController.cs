@@ -25,7 +25,8 @@ namespace Bookish.Server.Controllers
         [HttpGet]
         public PostModel Get([FromServices] IPostService postService, [FromQuery] int id)
         {
-            return postService.GetPost(id);
+            AuthUserModel authUser = (AuthUserModel)this.HttpContext.Items["authUserModel"];
+            return postService.GetPost(id, authUser);
         }
 
         /// <summary>

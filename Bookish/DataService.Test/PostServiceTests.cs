@@ -101,7 +101,7 @@ namespace Bookish.DataService.Test
                 Posted_By = authUser.Username
             });
 
-            PostModel model = postService.GetPost(1);
+            PostModel model = postService.GetPost(1, null);
             Post post = context.Posts.FirstOrDefault();
 
             Assert.AreEqual(model.Title, post.Title);
@@ -115,7 +115,7 @@ namespace Bookish.DataService.Test
         [TestCase]
         public void ReadPosts()
         {
-            List<PostListModel> posts = postService.GetPosts(1, 10, "votes");
+            List<PostListModel> posts = postService.GetPosts(1, 10, "votes", null);
             Assert.IsTrue(posts.Count() < 10);
         }
 
