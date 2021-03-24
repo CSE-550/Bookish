@@ -11,6 +11,8 @@ namespace Bookish.Client.Pages.History
 {
     public partial class History : ComponentBase
     {
+
+        public bool IsEmpty { get; set; }
         [Inject]
         public HttpClient HttpClient { get; set; }
 
@@ -34,7 +36,7 @@ namespace Bookish.Client.Pages.History
         {
             IsLoading = true;
             StateHasChanged();
-            List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist/myactivity?page={Page}&countPerPage={CountPerPage}&orderBy=");
+            List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/history?page={Page}&countPerPage={CountPerPage}&orderBy=");
             Posts.AddRange(posts);
             StateHasChanged();
         }
