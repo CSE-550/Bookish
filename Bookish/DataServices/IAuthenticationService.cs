@@ -9,7 +9,7 @@ namespace Bookish.DataServices
     {
         void SignUp(UserSignUpModel signUpModel);
         AuthUserModel Login(UserLoginModel loginModel);
-        List<IListItem> History(AuthUserModel authUser, int page);
+        List<HistoryModel> History(AuthUserModel authUser, int page);
         void Logout();
     }
 }

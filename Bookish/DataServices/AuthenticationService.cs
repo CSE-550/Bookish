@@ -139,7 +139,7 @@ namespace Bookish.DataServices
         /// <returns>
         /// A list of history items
         /// </returns>
-        public List<IListItem> History(AuthUserModel authUser, int page)
+        public List<HistoryModel> History(AuthUserModel authUser, int page)
         {
             // Get a query of the ids in order and the types
             var historyIds = context.Posts
@@ -188,19 +188,39 @@ namespace Bookish.DataServices
             List<PostListModel> posts = postService.GetPostListModels(postQuery);
 
             // Setup the results
-            List<IListItem> historyItems = new List<IListItem>();
+            List<HistoryModel> historyItems = new List<HistoryModel>();
 
             historyIds.ForEach(h =>
             {
                 if (h.Post)
                 {
                     PostListModel postModel = posts.Where(p => p.Id == h.Id).FirstOrDefault();
-                    historyItems.Add(postModel);
+                    historyItems.Add(new HistoryModel
+                    {
+                        Id = postModel.Id,
+                        IsComment = false,
+                        Posted_At = postModel.Posted_At,
+                        Posted_By = postModel.Posted_By,
+                        Rating = postModel.Rating,
+                        Title = postModel.Title,
+                        TotalComments = postModel.TotalComments,
+                        Votes = postModel.Votes,
+                    });
+
                 } 
                 else
                 {
                     CommentModel commentModel = comments.Where(c => c.Id == h.Id).FirstOrDefault();
-                    historyItems.Add(commentModel);
+                        historyItems.Add(new HistoryModel
+                                        {
+                        Id = commentModel.Post_Id,
+                        IsComment = true,
+                        Posted_At = commentModel.Commented_At,
+                        Posted_By = commentModel.Commented_By,
+                        Title = commentModel.Body,
+                        TotalComments = commentModel.TotalComments,
+                        Votes = commentModel.Votes,
+                    });
                 }
             });
 
