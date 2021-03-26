@@ -9,7 +9,10 @@
                 &#x1F44D;
             </span>
         </button>
+        @if (Votes != null)
+        {
         <p class="has-text-centered">@Votes</p>
+        }
         <button class="button is-white is-full-width" @onclick="@(() => Vote(-1))">
             <span style="opacity: @(Model != null && Model.isUpvote ? "0.3" : "")">
                 &#x1F44E;

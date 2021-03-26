@@ -139,7 +139,7 @@ namespace Bookish.DataServices
         /// <returns>
         /// A list of history items
         /// </returns>
-        public List<IListItem> History(AuthUserModel authUser, int page)
+        public HistoryModel History(AuthUserModel authUser, int page)
         {
             // Get a query of the ids in order and the types
             var historyIds = context.Posts
@@ -175,7 +175,7 @@ namespace Bookish.DataServices
                 .Where(com => commentIds.Contains(com.Id));
 
             // Get the comments
-            List<CommentModel> comments = commentService.GetCommentModels(commentQuery);
+            List<CommentModel> comments = commentService.GetCommentModels(commentQuery, authUser.Id);
 
             // Get the post ids we need to convert to models
             List<int> postIds = historyIds.Where(h => h.Post).Select(h => h.Id).ToList();
@@ -185,26 +185,14 @@ namespace Bookish.DataServices
                 .Where(p => postIds.Contains(p.Id));
 
             // Get the posts
-            List<PostListModel> posts = postService.GetPostListModels(postQuery);
+            List<PostListModel> posts = postService.GetPostListModels(postQuery, authUser.Id);
 
             // Setup the results
-            List<IListItem> historyItems = new List<IListItem>();
-
-            historyIds.ForEach(h =>
+            return new HistoryModel
             {
-                if (h.Post)
-                {
-                    PostListModel postModel = posts.Where(p => p.Id == h.Id).FirstOrDefault();
-                    historyItems.Add(postModel);
-                } 
-                else
-                {
-                    CommentModel commentModel = comments.Where(c => c.Id == h.Id).FirstOrDefault();
-                    historyItems.Add(commentModel);
-                }
-            });
-
-            return historyItems;
+                Posts = posts,
+                Comments = comments
+            };
         }
     }
 }

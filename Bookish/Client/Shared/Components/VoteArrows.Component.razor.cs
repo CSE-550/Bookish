@@ -17,7 +17,7 @@ namespace Bookish.Client.Shared.Components
         public HttpClient HttpClient { get; set; }
 
         [Parameter]
-        public int Votes { get; set; }
+        public int? Votes { get; set; }
 
         [Parameter]
         public RatingModel Model { get; set; }
@@ -49,8 +49,11 @@ namespace Bookish.Client.Shared.Components
             }
 
             Model = await response.Content.ReadFromJsonAsync<RatingModel>();
-            if (Model.isUpvote) Votes++;
-            else Votes--;
+            if (Votes != null)
+            {
+                if (Model.isUpvote) Votes++;
+                else Votes--;
+            }
             StateHasChanged();
         }
 

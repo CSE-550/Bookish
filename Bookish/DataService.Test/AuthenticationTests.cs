@@ -87,7 +87,7 @@ namespace Bookish.DataService.Test
             context.SaveChanges();
 
             // Get the history
-            List<IListItem> historyItems = authService.History(authUser, 1);
+            List<IListItem> historyItems = authService.History(authUser, 1).GetItems();
 
             Assert.AreEqual(2, historyItems.Count);
             Assert.IsTrue(historyItems[0] is CommentModel);

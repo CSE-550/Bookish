@@ -65,7 +65,6 @@ namespace Bookish.Client.Shared.Components
 
         protected void Vote(CommentModel comment, int vote)
         {
-            comment.Votes += vote;
             StateHasChanged();
         }
 

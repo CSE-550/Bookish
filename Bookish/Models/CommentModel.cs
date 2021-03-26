@@ -21,7 +21,6 @@ namespace Bookish.Models
         /// </summary>
         public int Post_Id { get; set; }
 
-
         /// <summary>
         /// The parent comment id
         /// </summary>
@@ -55,6 +54,15 @@ namespace Bookish.Models
         /// </summary>
         public List<CommentModel> Comments { get; set; }
 
-        public int Votes { get; set; }
+        /// <summary>
+        /// The rating of the authorized user
+        /// if they have rated it before
+        /// </summary>
+        public RatingModel Rating { get; set; }
+
+        public DateTime GetCreatedDate()
+        {
+            return Commented_At;
+        }
     }
 }

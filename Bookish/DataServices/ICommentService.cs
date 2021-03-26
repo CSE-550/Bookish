@@ -13,12 +13,12 @@ namespace Bookish.DataServices
     /// </summary>
     public interface ICommentService
     {
-        List<CommentModel> GetPostComments(int postId, int skip, int take);
+        List<CommentModel> GetPostComments(int postId, int skip, int take, int? userId);
 
-        List<CommentModel> GetSubComments(int commentId, int skip, int take);
+        List<CommentModel> GetSubComments(int commentId, int skip, int take, int? userId);
 
         CommentModel CreateComment(AuthUserModel authUser, CommentModel comment);
 
-        List<CommentModel> GetCommentModels(IQueryable<Comment> commentQuery);
+        List<CommentModel> GetCommentModels(IQueryable<Comment> commentQuery, int? userId);
     }
 }

@@ -28,7 +28,7 @@ namespace Bookish.DataServices
         /// <returns>
         /// A CommentModel queryable
         /// </returns>
-        public IQueryable<CommentModel> CommentModelQuery(IQueryable<Comment> commentQuery)
+        public IQueryable<CommentModel> CommentModelQuery(IQueryable<Comment> commentQuery, int? userId)
         {
             return commentQuery
                 .Select(com => new
@@ -44,7 +44,11 @@ namespace Bookish.DataServices
                     Parent_Id = com.com.Commented_UnderId,
                     Post_Id = com.com.Commented_OnId,
                     Commented_By = com.com.Commented_By.Username,
-                    Votes = com.com.Ratings.Where(r => r.IsUpvoted).Count(),
+                    Rating = userId == null ? null : com.com.Ratings.Where(r => r.User_Id == userId).Select(r => new RatingModel { 
+                        Id = r.Id,
+                        Comment_Id = com.com.Id,
+                        isUpvote = r.IsUpvoted
+                    }).FirstOrDefault(),
                     TotalComments = com.children.Count()
                 });
         }
@@ -71,7 +75,7 @@ namespace Bookish.DataServices
             context.Comments.Add(commentDB);
             context.SaveChanges();
 
-            return this.CommentModelQuery(context.Comments.Where(com => com.Id == commentDB.Id))
+            return this.CommentModelQuery(context.Comments.Where(com => com.Id == commentDB.Id), null)
                 .FirstOrDefault();
         }
 
@@ -79,12 +83,13 @@ namespace Bookish.DataServices
         /// Gets a list of comments model from a given queryable
         /// </summary>
         /// <param name="commentQuery">The queryable to convert to models</param>
+        /// <param name="userId">The authorized users id if there is one</param>
         /// <returns>
         /// A list of comment models
         /// </returns>
-        public List<CommentModel> GetCommentModels(IQueryable<Comment> commentQuery)
+        public List<CommentModel> GetCommentModels(IQueryable<Comment> commentQuery, int? userId)
         {
-            return CommentModelQuery(commentQuery)
+            return CommentModelQuery(commentQuery, userId)
                 .ToList();
         }
 
@@ -94,12 +99,13 @@ namespace Bookish.DataServices
         /// <param name="postId">The post id</param>
         /// <param name="skip">How many comments to skip</param>
         /// <param name="take">How many comments to take</param>
+        /// <param name="userId">The authorized users id if there is one</param>
         /// <returns>
         /// A list of comment models for a given post
         /// </returns>
-        public List<CommentModel> GetPostComments(int postId, int skip, int take)
+        public List<CommentModel> GetPostComments(int postId, int skip, int take, int? userId)
         {
-            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_OnId == postId && com.Commented_UnderId == null))
+            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_OnId == postId && com.Commented_UnderId == null), userId)
                 .Skip(skip)
                 .Take(take)
                 .ToList();
@@ -111,12 +117,13 @@ namespace Bookish.DataServices
         /// <param name="commentId">The comment id</param>
         /// <param name="skip">How many comments to skip</param>
         /// <param name="take">How many comments to take</param>
+        /// <param name="userId">The authorized users id if there is one</param>
         /// <returns>
         /// A list of comment models for a given comment
         /// </returns>
-        public List<CommentModel> GetSubComments(int commentId, int skip, int take)
+        public List<CommentModel> GetSubComments(int commentId, int skip, int take, int? userId)
         {
-            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_UnderId == commentId))
+            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_UnderId == commentId), userId)
                 .OrderBy(com => com.Id)
                 .Skip(skip)
                 .Take(take)

@@ -1,4 +1,45 @@
 ﻿@page "/Account/History"
 
-<h1>My Activity</h1>
-<Bookish.Client.Shared.Components.PostList Posts="@Posts"></Bookish.Client.Shared.Components.PostList>
+@using Bookish.Client.Shared.Components
+
+<div class="columns">
+    <div class="column">
+        <h1>@UserName's Account History</h1>
+    </div>
+</div>
+
+<div class="columns">
+    <div class="column">
+        <hr/>
+    </div>
+</div>
+
+@if (HistoryItems.Count() == 0 && !IsLoading)
+{
+    <div class="columns has-text-centered">
+        <div class="column">
+            <h3 class="title">Sorry, no posts or comments available</h3>
+        </div>
+    </div>
+}
+else
+{
+    @foreach (IListItem item in HistoryItems)
+    {
+        if (item is PostListModel)
+        {
+            <PostList_Component Post="(PostListModel)item"></PostList_Component>
+        } else if (item is CommentModel)
+        {
+            <Comment_Component CommentModel="(CommentModel)item"></Comment_Component>
+        }
+    }
+
+    <div class="columns">
+        <div class="column has-text-centered">
+            <button class="button is-success" @onclick="LoadMoreItems" disabled="@IsEmpty">
+                Load Next Page
+            </button>
+        </div>
+    </div>
+}

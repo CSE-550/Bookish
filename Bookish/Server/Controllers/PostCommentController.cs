@@ -26,7 +26,8 @@ namespace Bookish.Server.Controllers
         [HttpGet]
         public List<CommentModel> Get([FromServices] ICommentService commentService, [FromQuery] int postId, [FromQuery] int skip, [FromQuery] int take)
         {
-            return commentService.GetPostComments(postId, skip, take);
+            AuthUserModel authUser = (AuthUserModel)this.HttpContext.Items["authUserModel"];
+            return commentService.GetPostComments(postId, skip, take, authUser?.Id);
         }
     }
 }

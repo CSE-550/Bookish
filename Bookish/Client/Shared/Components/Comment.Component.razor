@@ -2,64 +2,66 @@
 
 @inherits Comment
 
-<div class="columns is-multiline box mb-5">
-    <div class="column is-full">
-        <span class="is-size-7">
-            @(CommentModel.Commented_By ?? "anon")  <span title="@CommentModel.Commented_At.ToString()">@GetTimeSincePost()</span>
-        </span>
+<div class="columns is-paddingless box mb-5">
+    <div class="column is-1">
+        <VoteArrows_Component CommentId="CommentModel.Id" Model="CommentModel.Rating"></VoteArrows_Component>
     </div>
-    <div class="column is-full">
-        <p>
-            @CommentModel.Body
-        </p>
-        <AuthorizeView>
-            <Authorized>
-                <button type="submit" class="oi-thumb-up" @onclick="@(() => Vote(@CommentModel, 1))">&#x1F44D;</button><p>@CommentModel.Votes</p><button type="submit" class="oi-thumb-down" @onclick="@(() => Vote(@CommentModel, -1))">&#x1F44E;</button>
-            </Authorized>
-        </AuthorizeView>
-    </div>
-    <div class="column is-full">
-        <div class="columns">
-            <div class="column">
-                <a @onclick="@(() => IsReplying = !IsReplying)">reply</a>
+    <div class="column is-11">
+        <div class="columns is-multiline">
+            <div class="column is-full">
+                <span class="is-size-7">
+                    @(CommentModel.Commented_By ?? "anon")  <span title="@CommentModel.Commented_At.ToString()">@GetTimeSincePost()</span>
+                </span>
             </div>
-            @if (CommentModel.Comments != null && CommentModel.Comments.Count() > 0)
+            <div class="column is-full">
+                <p>
+                    @CommentModel.Body
+                </p>
+            </div>
+            <div class="column is-full">
+                <div class="columns">
+                    <div class="column">
+                        <a @onclick="@(() => IsReplying = !IsReplying)">reply</a>
+                    </div>
+                    @if (CommentModel.Comments != null && CommentModel.Comments.Count() > 0)
+                    {
+                        <div class="column">
+                            <a @onclick="@(() => IsHidingChildren = !IsHidingChildren)">
+                                @(IsHidingChildren ? "show" : "hide") @CommentModel.Comments.Count child comments
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @if (IsReplying)
+            {
+                <div class="column is-full">
+                    <textarea class="textarea" @bind="CommentBody"></textarea>
+                </div>
+                <div class="column is-full">
+                    <button class="button is-success" @onclick="AddComment">Add Comment</button>
+                </div>
+            }
+
+            @if (CommentModel.Comments != null && !IsHidingChildren)
+            {
+                @foreach (CommentModel comment in CommentModel.Comments)
+                {
+                    <div class="column is-full">
+                        <Comment_Component CommentModel="comment"></Comment_Component>
+                    </div>
+                }
+            }
+
+            @if (CommentModel.Comments != null && CommentModel.Comments.Count < CommentModel.TotalComments)
             {
                 <div class="column">
-                    <a @onclick="@(() => IsHidingChildren = !IsHidingChildren)">
-                        @(IsHidingChildren ? "show" : "hide") @CommentModel.Comments.Count child comments
+                    <a @onclick="LoadRemaining">
+                        load @((CommentModel.TotalComments - CommentModel.Comments.Count()).ToString()) comments
                     </a>
                 </div>
             }
         </div>
     </div>
-
-    @if (IsReplying)
-    {
-        <div class="column is-full">
-            <textarea class="textarea" @bind="CommentBody"></textarea>
-        </div>
-        <div class="column is-full">
-            <button class="button is-success" @onclick="AddComment">Add Comment</button>
-        </div>
-    }
-
-    @if (CommentModel.Comments != null && !IsHidingChildren)
-    {
-        @foreach (CommentModel comment in CommentModel.Comments)
-        {
-            <div class="column is-full">
-                <Comment_Component CommentModel="comment"></Comment_Component>
-            </div>
-        }
-    }
-
-    @if (CommentModel.Comments != null && CommentModel.Comments.Count < CommentModel.TotalComments)
-    {
-        <div class="column">
-            <a @onclick="LoadRemaining">
-                load @((CommentModel.TotalComments - CommentModel.Comments.Count()).ToString()) comments
-            </a>
-        </div>
-    }
 </div>

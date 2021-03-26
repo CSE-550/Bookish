@@ -1,4 +1,6 @@
-﻿using Bookish.Models;
+﻿using Blazored.LocalStorage;
+using Bookish.Client.Services;
+using Bookish.Models;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -14,35 +16,41 @@ namespace Bookish.Client.Pages.History
         [Inject]
         public HttpClient HttpClient { get; set; }
 
-        protected List<PostListModel> Posts { get; set; }
+        [Inject]
+        public ILocalStorageService LocalStorage { get; set; }
+
+        protected List<IListItem> HistoryItems { get; set; }
 
         protected int Page { get; set; }
 
-        protected int CountPerPage { get; set; }
-
         protected bool IsLoading { get; set; }
 
-        protected override void OnInitialized()
+        protected bool IsEmpty { get; set; }
+
+        protected string UserName { get; set; }
+
+        protected override async Task OnInitializedAsync()
         {
-            Posts = new List<PostListModel>();
-            Page = 1;
-            CountPerPage = 25;
-            LoadPosts();
+            HistoryItems = new List<IListItem>();
+            UserName = await LocalStorage.GetItemAsync<string>("user");
+            LoadMoreItems();
         }
 
-        protected async void LoadPosts()
+        protected async void LoadItems()
         {
             IsLoading = true;
             StateHasChanged();
-            List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist/myactivity?page={Page}&countPerPage={CountPerPage}&orderBy=");
-            Posts.AddRange(posts);
+            HistoryModel historyModel = await HttpClient.GetFromJsonAsync<HistoryModel>($"/api/history?page={Page}");
+            List<IListItem> items = historyModel.GetItems();
+            IsEmpty = items.Count() == 0;
+            HistoryItems.AddRange(items);
             StateHasChanged();
         }
 
-
-        protected void LoadNextPage()
+        protected void LoadMoreItems()
         {
-            LoadPosts();
+            Page++;
+            LoadItems();
         }
     }
 }

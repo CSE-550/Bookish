@@ -42,5 +42,9 @@ namespace Bookish.Models
         /// </summary>
         public string Posted_By { get; set; }
 
+        public DateTime GetCreatedDate()
+        {
+            return Posted_At;
+        }
     }
 }

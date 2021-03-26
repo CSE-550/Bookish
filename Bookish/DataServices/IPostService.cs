@@ -19,6 +19,6 @@ namespace Bookish.DataServices
 
         PostModel CreatePost(AuthUserModel authUser, PostModel postModel);
 
-        List<PostListModel> GetPostListModels(IQueryable<Post> postQuery, int? authUserModel = null);
+        List<PostListModel> GetPostListModels(IQueryable<Post> postQuery, int? authUserId = null);
     }
 }
