@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Bookish.DataServices
 {
@@ -17,7 +18,7 @@ namespace Bookish.DataServices
 
         PostModel GetPost(int id, AuthUserModel authUser);
 
-        PostModel CreatePost(AuthUserModel authUser, PostModel postModel);
+        Task<PostModel> CreatePost(AuthUserModel authUser, PostModel postModel, OpenLibraryService openLibraryService);
 
         List<PostListModel> GetPostListModels(IQueryable<Post> postQuery, int? authUserId = null);
     }

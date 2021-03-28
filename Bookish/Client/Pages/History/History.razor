@@ -24,16 +24,22 @@
 }
 else
 {
-    @foreach (IListItem item in HistoryItems)
-    {
-        if (item is PostListModel)
+    <div class="columns is-multiline">
+        @foreach (IListItem item in HistoryItems)
         {
-            <PostList_Component Post="(PostListModel)item"></PostList_Component>
-        } else if (item is CommentModel)
-        {
-            <Comment_Component CommentModel="(CommentModel)item"></Comment_Component>
+            @if (item is PostListModel)
+            {
+                <div class="column is-full box mb-5">
+                    <PostList_Component Post="(PostListModel)item"></PostList_Component>
+                </div>
+            } else if (item is CommentModel)
+            {
+                <div class="column is-full">
+                    <Comment_Component CommentModel="(CommentModel)item" DisplayPostTitle="true"></Comment_Component>
+                </div>
+            }
         }
-    }
+    </div>
 
     <div class="columns">
         <div class="column has-text-centered">

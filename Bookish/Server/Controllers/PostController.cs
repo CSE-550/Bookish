@@ -39,10 +39,10 @@ namespace Bookish.Server.Controllers
         /// </returns>
         [Authorize]
         [HttpPut]
-        public PostModel Put([FromServices] IPostService postService, [FromBody] PostModel postModel)
+        public async Task<PostModel> Put([FromServices] OpenLibraryService openLibraryService, [FromServices] IPostService postService, [FromBody] PostModel postModel)
         {
             AuthUserModel authUser = (AuthUserModel)this.HttpContext.Items["authUserModel"];
-            return postService.CreatePost(authUser, postModel);
+            return await postService.CreatePost(authUser, postModel, openLibraryService);
         }
     }
 }

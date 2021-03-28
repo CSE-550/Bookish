@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Bookish.DataService.Test
 {
@@ -27,6 +28,11 @@ namespace Bookish.DataService.Test
         private CommentService commentService;
 
         /// <summary>
+        /// The service for making http request to open library
+        /// </summary>
+        private OpenLibraryService openLibraryService;
+
+        /// <summary>
         /// The user generating the comment
         /// </summary>
         private AuthUserModel authUser;
@@ -43,6 +49,7 @@ namespace Bookish.DataService.Test
             context = new Context(options);
             commentService = new CommentService(context);
             postService = new PostService(context, commentService);
+            openLibraryService = new OpenLibraryService(new System.Net.Http.HttpClient());
             authUser = new AuthUserModel
             {
                 Id = 1,
@@ -70,7 +77,7 @@ namespace Bookish.DataService.Test
         /// and contains the same information
         /// </summary>
         [TestCase]
-        public void CommentOnPost()
+        public async Task CommentOnPost()
         {
             // Create Post
             PostModel model = new PostModel
@@ -78,9 +85,10 @@ namespace Bookish.DataService.Test
                 Title = "This is a new book",
                 Body = "The body of the post",
                 Posted_At = DateTime.Now,
+                ISBN = "9780553573404"
             };
 
-            model = postService.CreatePost(authUser, model);
+            model = await postService.CreatePost(authUser, model, openLibraryService);
 
             // Add a comment under the post
             CommentModel commentModel = new CommentModel

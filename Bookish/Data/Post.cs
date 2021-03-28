@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -10,6 +11,19 @@ namespace Bookish.Data
         public int Id { get; set; }
 
         public string Title { get; set; }
+
+        public string BookTitle { get; set; }
+
+        public string Author { get; set; }
+
+        /// <summary>
+        /// The works id allows for utilizing
+        /// Open Libary API
+        /// </summary>
+        public string WorksId { get; set; }
+
+        [MaxLength(13)]
+        public string ISBN { get; set; }
 
         public string Body { get; set; }
 

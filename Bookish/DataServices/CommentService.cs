@@ -30,6 +30,7 @@ namespace Bookish.DataServices
         /// </returns>
         public IQueryable<CommentModel> CommentModelQuery(IQueryable<Comment> commentQuery, int? userId)
         {
+            int authId = userId == null ? 0 : (int)userId;
             return commentQuery
                 .Select(com => new
                 {
@@ -40,11 +41,12 @@ namespace Bookish.DataServices
                 {
                     Body = com.com.Body,
                     Commented_At = com.com.Commented_At,
+                    PostTitle = com.com.Commented_On.Title,
                     Id = com.com.Id,
                     Parent_Id = com.com.Commented_UnderId,
                     Post_Id = com.com.Commented_OnId,
                     Commented_By = com.com.Commented_By.Username,
-                    Rating = userId == null ? null : com.com.Ratings.Where(r => r.User_Id == userId).Select(r => new RatingModel { 
+                    Rating = com.com.Ratings.Where(r => r.User_Id == authId).Select(r => new RatingModel { 
                         Id = r.Id,
                         Comment_Id = com.com.Id,
                         isUpvote = r.IsUpvoted
