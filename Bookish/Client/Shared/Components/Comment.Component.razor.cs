@@ -17,6 +17,9 @@ namespace Bookish.Client.Shared.Components
         [Parameter]
         public CommentModel CommentModel { get; set; }
 
+        [Parameter]
+        public bool DisplayPostTitle { get; set; }
+
         protected bool IsReplying { get; set; }
 
         protected string CommentBody { get; set; }
@@ -51,15 +54,15 @@ namespace Bookish.Client.Shared.Components
             TimeSpan timeSince = DateTime.Now - CommentModel.Commented_At;
             if (timeSince.TotalHours < 1)
             {
-                return string.Format("{0:mm} min ago", timeSince);
+                return string.Format("{0:%m} min ago", timeSince);
             } 
             else if (timeSince.TotalHours < 24)
             {
-                return string.Format("{0:hh} hours ago", timeSince);
+                return string.Format("{0:%h} hours ago", timeSince);
             }
             else
             {
-                return string.Format("{0:dd} days ago", timeSince);
+                return string.Format("{0:%d} days ago", timeSince);
             }
         }
 

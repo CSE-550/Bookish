@@ -8,8 +8,20 @@
     <div class="column is-1">
         <VoteArrows_Component Model="Post.Rating" Votes="Post.Votes" PostId="Post.Id"></VoteArrows_Component>
     </div>
-    <div class="column is-11" @onclick="@(() => OpenPost(Post))">
-        <h3 class="is-size-4 is-bold">@Post.Title</h3>
-        <span>Posted by @Post.Posted_By on @Post.Posted_At.ToString("MM/dd/yy") with @Post.TotalComments Comments </span>
+    <div class="column is-10" @onclick="@(() => OpenPost(Post))">
+        <div class="columns is-multiline">
+            <div class="column is-full is-paddingless">
+                <h3 class="is-size-4 is-bold">@Post.Title</h3>
+            </div>
+            <div class="column is-full is-paddingless">
+                <span class="is-size-6">@Post.BookTitle by @(Post.Author ?? "Unknown")</span>
+            </div>
+            <div class="column is-full is-paddingless">
+                <span class="is-size-7">Posted by @Post.Posted_By on @Post.Posted_At.ToString("MM/dd/yy") with @Post.TotalComments Comments </span>
+            </div>
+        </div>
+    </div>
+    <div class="column is-1">
+        <img src="@($"http://covers.openlibrary.org/b/isbn/{Post.ISBN}-S.jpg")" />
     </div>
 </div>

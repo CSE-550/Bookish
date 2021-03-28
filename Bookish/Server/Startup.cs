@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Npgsql;
 using System;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 
 namespace Bookish.Server
@@ -76,10 +77,12 @@ namespace Bookish.Server
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.GetSection("securityKey").Value))
                 };
             });
+            services.AddScoped(sp => new HttpClient());
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IRatingService, RatingService>();
+            services.AddScoped<OpenLibraryService>();
             services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddRazorPages();
         }

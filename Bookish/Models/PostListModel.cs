@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Bookish.Models
@@ -12,9 +13,26 @@ namespace Bookish.Models
         public int Id { get; set; }
 
         /// <summary>
+        /// The ISBN of the book for getting information
+        /// </summary>
+        [MaxLength(13)]
+        [MinLength(13)]
+        public string ISBN { get; set; }
+
+        /// <summary>
         /// The post title
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// The title of the book being discussed
+        /// </summary>
+        public string BookTitle { get; set; }
+
+        /// <summary>
+        /// The name of the author, if known
+        /// </summary>
+        public string Author { get; set; }
 
         /// <summary>
         /// When the post was created

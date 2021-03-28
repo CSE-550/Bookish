@@ -7,21 +7,29 @@
 {
 
     <div class="columns">
-        <div class="column is-1">
-            <VoteArrows_Component Model="Model.Rating" Votes="Model.Votes" PostId="Model.Id"></VoteArrows_Component>
+        <div class="column is-2">
+            <img src="@($"http://covers.openlibrary.org/b/isbn/{Model.ISBN}-M.jpg")" />
         </div>
-        <div class="column is-11">
+
+        <div class="column is-10">
             <div class="columns">
-                <div class="column">
-                    <h1 class="is-size-2">@Model.Title</h1>
-                    <p>
-                        @Model.Posted_By
-                    </p>
+                <div class="column is-1">
+                    <VoteArrows_Component Model="Model.Rating" Votes="Model.Votes" PostId="Model.Id"></VoteArrows_Component>
                 </div>
-            </div>
-            <div class="columns">
-                <div class="column">
-                    <p>@Model.Body</p>
+                <div class="column is-11">
+                    <div class="columns">
+                        <div class="column">
+                            <h1 class="is-size-2">@Model.Title</h1>
+                            <p>
+                                @Model.Posted_By
+                            </p>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column">
+                            <p>@Model.Body</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -29,6 +37,13 @@
 
     <AuthorizeView>
         <Authorized>
+
+            <div class="columns">
+                <div class="column">
+                    <h3 class="is-size-5">All comments @Model.TotalComments</h3>
+                    <hr />
+                </div>
+            </div>
 
             <div class="columns">
                 <div class="column">

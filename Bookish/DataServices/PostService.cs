@@ -3,6 +3,7 @@ using Bookish.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Bookish.DataServices
 {
@@ -65,7 +66,10 @@ namespace Bookish.DataServices
                     Title = post.Title,
                     Votes = post.Ratings.Where(r => r.IsUpvoted).Count(),
                     Posted_By = post.Posted_By.Username,
-                    Rating = post.Ratings.Where(r => r.User_Id == authUserId).Select(r => new RatingModel { 
+                    BookTitle = post.BookTitle,
+                    Author = post.Author,
+                    ISBN = post.ISBN,
+                    Rating = authUserId == null ? null : post.Ratings.Where(r => r.User_Id == authUserId).Select(r => new RatingModel { 
                         Id = r.Id,
                         Post_Id = r.Post_Id,
                         isUpvote = r.IsUpvoted
@@ -93,8 +97,11 @@ namespace Bookish.DataServices
                     Posted_By = post.Posted_By.Username,
                     Posted_At = post.Posted_At,
                     Title = post.Title,
+                    ISBN = post.ISBN,
+                    Author = post.Author,
+                    BookTitle = post.BookTitle,
                     Votes = post.Ratings.Where(r => r.IsUpvoted).Count(),
-                    Rating = post.Ratings.Where(r => r.User_Id == authUser.Id).Select(r => new RatingModel { 
+                    Rating = authUser == null ? null : post.Ratings.Where(r => r.User_Id == authUser.Id).Select(r => new RatingModel { 
                         Id = r.Id,
                         Post_Id = r.Post_Id,
                         isUpvote = r.IsUpvoted
@@ -103,11 +110,11 @@ namespace Bookish.DataServices
                 })
                 .FirstOrDefault();
 
-            postModel.Comments = commentService.GetPostComments(id, 0, 5, authUser.Id);
+            postModel.Comments = commentService.GetPostComments(id, 0, 5, authUser?.Id);
 
             postModel.Comments.ForEach(com => {
-                com.Comments = commentService.GetSubComments(com.Id, 0, 5, authUser.Id);
-                com.Comments.ForEach(subCom => subCom.Comments = commentService.GetSubComments(subCom.Id, 0, 5, authUser.Id));
+                com.Comments = commentService.GetSubComments(com.Id, 0, 5, authUser?.Id);
+                com.Comments.ForEach(subCom => subCom.Comments = commentService.GetSubComments(subCom.Id, 0, 5, authUser?.Id));
             });
 
             return postModel;
@@ -120,14 +127,42 @@ namespace Bookish.DataServices
         /// <returns>
         /// The newly created post as a PostModel
         /// </returns>
-        public PostModel CreatePost(AuthUserModel authUser, PostModel postModel)
+        public async Task<PostModel> CreatePost(AuthUserModel authUser, PostModel postModel, OpenLibraryService openLibraryService)
         {
+            // Get the information
+            OpenLibraryBook opBook = await openLibraryService.GetBookInformation(postModel.ISBN);
+
+            if (opBook == null)
+            {
+                throw new Exception("Failed to find book information");
+            }
+
+            // Determine how to handle author
+            string author = null;
+
+            if (opBook.by_statement == null && opBook.authors != null)
+            {
+                // Get the author statement
+                OpenLibraryAuthor opauthor = await openLibraryService.GetAuthorInformation(opBook.authors.FirstOrDefault().key);
+                if (opauthor != null) {
+                    author = opauthor.name;
+                } 
+            } 
+            else
+            {
+                author = opBook.by_statement;
+            }
+
             Post post = new Post
             {
                 Title = postModel.Title,
                 Body = postModel.Body,
                 Posted_At = DateTime.Now,
-                Posted_ById = authUser.Id
+                Posted_ById = authUser.Id,
+                ISBN = postModel.ISBN,
+                BookTitle = opBook.title,
+                WorksId = opBook.works.FirstOrDefault()?.key.Replace("/works/", ""),
+                Author = author
             };
 
             context.Posts.Add(post);

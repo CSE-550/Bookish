@@ -60,6 +60,12 @@ namespace Bookish.Models
         /// </summary>
         public RatingModel Rating { get; set; }
 
+        /// <summary>
+        /// The post title for when the comment is
+        /// detached from the post
+        /// </summary>
+        public string PostTitle { get; set; }
+
         public DateTime GetCreatedDate()
         {
             return Commented_At;

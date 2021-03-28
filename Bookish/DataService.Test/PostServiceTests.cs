@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Bookish.DataService.Test
 {
@@ -26,6 +27,10 @@ namespace Bookish.DataService.Test
         /// </summary>
         private CommentService commentService;
         /// <summary>
+        /// The open library service for additional information
+        /// </summary>
+        private OpenLibraryService openLibraryService;
+        /// <summary>
         /// The user generating the post
         /// </summary>
         private AuthUserModel authUser;
@@ -42,6 +47,7 @@ namespace Bookish.DataService.Test
             context = new Context(options);
             commentService = new CommentService(context);
             postService = new PostService(context, commentService);
+            openLibraryService = new OpenLibraryService(new System.Net.Http.HttpClient());
             authUser = new AuthUserModel
             {
                 Id = 1,
@@ -67,17 +73,18 @@ namespace Bookish.DataService.Test
         /// Create a post and verify the information
         /// </summary>
         [TestCase]
-        public void CreatePost()
+        public async Task CreatePost()
         {
             PostModel model = new PostModel
             {
                 Title = "This is a new book",
                 Body = "The body of the post",
                 Posted_At = DateTime.Now,
+                ISBN = "9780553573404",
                 Posted_By = authUser.Username
             };
 
-            postService.CreatePost(authUser, model);
+            await postService.CreatePost(authUser, model, openLibraryService);
 
             Post post = context.Posts.FirstOrDefault();
 
@@ -90,16 +97,17 @@ namespace Bookish.DataService.Test
         /// Create a post then read the post
         /// </summary>
         [TestCase]
-        public void ReadPost()
+        public async Task ReadPost()
         {
             // Create the post
-            postService.CreatePost(authUser, new PostModel
+            await postService.CreatePost(authUser, new PostModel
             {
                 Title = "This is a new book",
                 Body = "The body of the post",
                 Posted_At = DateTime.Now,
+                ISBN = "9780553573404",
                 Posted_By = authUser.Username
-            });
+            }, openLibraryService);
 
             PostModel model = postService.GetPost(1, null);
             Post post = context.Posts.FirstOrDefault();
