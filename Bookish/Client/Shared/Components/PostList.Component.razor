@@ -8,7 +8,7 @@
     <div class="column is-1">
         <VoteArrows_Component Model="Post.Rating" Votes="Post.Votes" PostId="Post.Id"></VoteArrows_Component>
     </div>
-    <div class="column is-10" @onclick="@(() => OpenPost(Post))">
+    <div class="column is-10 mt-4" @onclick="@(() => OpenPost(Post))">
         <div class="columns is-multiline">
             <div class="column is-full is-paddingless">
                 <h3 class="is-size-4 is-bold">@Post.Title</h3>
@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    <div class="column is-1">
+    <div class="column is-1 mt-5">
         <img src="@($"http://covers.openlibrary.org/b/isbn/{Post.ISBN}-S.jpg")" />
     </div>
 </div>

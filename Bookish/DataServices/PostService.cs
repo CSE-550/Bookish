@@ -110,12 +110,15 @@ namespace Bookish.DataServices
                 })
                 .FirstOrDefault();
 
-            postModel.Comments = commentService.GetPostComments(id, 0, 5, authUser?.Id);
+            postModel.Comments = commentService.GetPostComments(id, 0, 15, authUser?.Id);
 
-            postModel.Comments.ForEach(com => {
-                com.Comments = commentService.GetSubComments(com.Id, 0, 5, authUser?.Id);
-                com.Comments.ForEach(subCom => subCom.Comments = commentService.GetSubComments(subCom.Id, 0, 5, authUser?.Id));
-            });
+            void GetComments(CommentModel com)
+            {
+                com.Comments = commentService.GetSubComments(com.Id, 0, 15, authUser?.Id);
+                com.Comments.ForEach(subCom => GetComments(subCom));
+            }
+
+            postModel.Comments.ForEach(com => GetComments(com));
 
             return postModel;
         }
