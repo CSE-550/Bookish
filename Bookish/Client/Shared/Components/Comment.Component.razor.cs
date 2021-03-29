@@ -20,7 +20,12 @@ namespace Bookish.Client.Shared.Components
         [Parameter]
         public bool DisplayPostTitle { get; set; }
 
+        [Parameter]
+        public bool IsSub { get; set; }
+
         protected bool IsReplying { get; set; }
+
+        protected bool IsCollapsed { get; set; }
 
         protected string CommentBody { get; set; }
 
@@ -38,6 +43,7 @@ namespace Bookish.Client.Shared.Components
             CommentModel.Comments.Add(await response.Content.ReadFromJsonAsync<CommentModel>());
 
             CommentBody = null;
+            IsReplying = false;
 
             StateHasChanged();
         }

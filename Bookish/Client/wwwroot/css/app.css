@@ -1,6 +1,6 @@
 ﻿.post-item:hover {
     cursor: pointer;
-    box-shadow: 4px 8px 6px 1px #e5e5e5;
+    box-shadow: -1px 0px 6px 1px #e5e5e5
 }
 
 .is-full-width {
