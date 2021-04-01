@@ -5,6 +5,7 @@
     <UserSecretsId>5321d4a6-39f2-427c-848b-5110908c471c</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <Nullable>annotations</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

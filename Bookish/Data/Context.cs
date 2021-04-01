@@ -28,5 +28,7 @@ namespace Bookish.Data
         public DbSet<User> Users { get; set; }
 
         public DbSet<Rating> Ratings { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
     }
 }

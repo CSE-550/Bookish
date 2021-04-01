@@ -15,9 +15,12 @@ namespace Bookish.DataServices
     {
         private Context context;
 
-        public CommentService(Context context)
+        private IMessageService messageService;
+
+        public CommentService(Context context, IMessageService messageService)
         {
             this.context = context;
+            this.messageService = messageService;
         }
 
         /// <summary>
@@ -74,11 +77,45 @@ namespace Bookish.DataServices
                 Commented_OnId = comment.Post_Id,
             };
 
+            var postInformation = context.Posts
+                .Where(p => p.Id == comment.Post_Id)
+                .Select(p => new { p.Title, p.Posted_ById })
+                .FirstOrDefault();
+
             context.Comments.Add(commentDB);
             context.SaveChanges();
 
-            return this.CommentModelQuery(context.Comments.Where(com => com.Id == commentDB.Id), null)
+            CommentModel commentModel =  this.CommentModelQuery(context.Comments.Where(com => com.Id == commentDB.Id), null)
                 .FirstOrDefault();
+
+            // If this was a post level comment, notify the poster
+            if (commentDB.Commented_UnderId == null && postInformation.Posted_ById != authUser.Id)
+            {
+                messageService.CreateMessage(new AuthMessageModel
+                {
+                    Comment = commentModel,
+                    Title = "post reply"
+                }, postInformation.Posted_ById); 
+            }
+
+            // If this is under a comment and the current commentor is not the user notify the user
+            if (commentDB.Commented_UnderId != null)
+            {
+                int? commentorId = context.Comments
+                    .Where(c => c.Id == commentDB.Commented_UnderId)
+                    .Select(c => c.Commented_ById)
+                    .FirstOrDefault();
+                if (commentorId.HasValue && commentorId != authUser.Id)
+                {
+                    messageService.CreateMessage(new AuthMessageModel
+                    {
+                        Comment = commentModel,
+                        Title = "comment reply"
+                    }, commentorId.Value); 
+                }
+            }
+
+            return commentModel;
         }
 
         /// <summary>

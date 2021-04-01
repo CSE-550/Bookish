@@ -78,6 +78,7 @@ namespace Bookish.Server
                 };
             });
             services.AddScoped(sp => new HttpClient());
+            services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ICommentService, CommentService>();

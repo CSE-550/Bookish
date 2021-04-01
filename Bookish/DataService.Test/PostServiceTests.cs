@@ -31,6 +31,10 @@ namespace Bookish.DataService.Test
         /// </summary>
         private OpenLibraryService openLibraryService;
         /// <summary>
+        /// The message service for creating messages
+        /// </summary>
+        private MessageService messageService;
+        /// <summary>
         /// The user generating the post
         /// </summary>
         private AuthUserModel authUser;
@@ -45,7 +49,7 @@ namespace Bookish.DataService.Test
                       .UseInMemoryDatabase("bookish")
                       .Options;
             context = new Context(options);
-            commentService = new CommentService(context);
+            commentService = new CommentService(context, messageService);
             postService = new PostService(context, commentService);
             openLibraryService = new OpenLibraryService(new System.Net.Http.HttpClient());
             authUser = new AuthUserModel
