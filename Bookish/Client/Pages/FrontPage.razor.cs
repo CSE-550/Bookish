@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bookish.Client.Pages
 {
+
     public partial class FrontPage : ComponentBase
     {
         [Inject]
@@ -24,6 +25,10 @@ namespace Bookish.Client.Pages
 
         protected bool IsEmpty { get; set; }
 
+        protected bool IsMinPosts { get; set; }
+
+        protected string Sort { get; set; }
+
        protected override void OnInitialized()
         {
             Posts = new List<PostListModel>();
@@ -35,6 +40,7 @@ namespace Bookish.Client.Pages
         protected async void LoadPosts()
         {
             IsLoading = true;
+            Posts.Clear();
             StateHasChanged();
             List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist?page={Page}&countPerPage={CountPerPage}&orderBy=");
             if (posts == null || posts.Count() == 0)
@@ -43,6 +49,11 @@ namespace Bookish.Client.Pages
             }
             else
             {
+                if (posts.Count() <= CountPerPage)
+                {
+                    IsMinPosts = true;
+                }
+
                 Posts.AddRange(posts);
             }
             IsLoading = false;
@@ -54,5 +65,12 @@ namespace Bookish.Client.Pages
         {
           LoadPosts();
         }
+
+        protected void setSort(ChangeEventArgs e)
+        {
+            Sort = e.Value.ToString();
+            LoadPosts();
+        }
+
     }
 }
