@@ -8,5 +8,7 @@ namespace Bookish.DataServices
     public interface IMessageService
     {
         void CreateMessage(AuthMessageModel messageModel, int forUserId);
+
+        List<AuthMessageModel> GetMessages(AuthUserModel authUser, int page);
     }
 }

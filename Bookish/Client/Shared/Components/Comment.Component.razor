@@ -9,7 +9,7 @@
             <div class="columns">
                 <div class="column">
                     <label class="has-text-weight-bold">
-                        @CommentModel.PostTitle
+                        @(PostTitleOverride ?? CommentModel.PostTitle)
                     </label>
                 </div>
             </div>
