@@ -10,6 +10,8 @@ namespace Bookish.Data
         public int Id { get; set; }
 
         public string Title { get; set; }
+
+        public bool Seen { get; set; }
         
         public int ForUser_Id { get; set; }
         [ForeignKey("ForUser_Id")]

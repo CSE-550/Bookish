@@ -31,13 +31,15 @@ namespace Bookish.DataServices
         public List<AuthMessageModel> GetMessages(AuthUserModel authUser, int page)
         {
             int? authUserId = authUser?.Id;
-            return context.Messages
+            List<AuthMessageModel> messages = context.Messages
                 .Where(m => m.ForUser_Id == authUser.Id)
                 .Skip((page - 1) * 25)
                 .Take(25)
                 .Select(m => new AuthMessageModel
                 {
+                    Id = m.Id,
                     Title = m.Title,
+                    Seen = m.Seen,
                     Post = new PostListModel
                     {
                         Title = m.AboutComment.Commented_On.Title        
@@ -58,6 +60,30 @@ namespace Bookish.DataServices
                     }
                 })
                 .ToList();
+
+            List<int> unreadIds = messages
+                .Where(me => !me.Seen)
+                .Select(me => me.Id)
+                .ToList();
+
+            if (unreadIds.Count() > 0)
+            {
+                List<Message> messagesDb = context.Messages
+                    .Where(m => unreadIds.Contains(m.Id))
+                    .ToList();
+
+                messagesDb.ForEach(m => m.Seen = true);
+                context.SaveChanges();
+            }
+
+            return messages;
+        }
+
+        public int UnreadMessages(AuthUserModel authUser)
+        {
+            return context.Messages
+                .Where(m => m.ForUser_Id == authUser.Id && !m.Seen)
+                .Count();
         }
     }
 }

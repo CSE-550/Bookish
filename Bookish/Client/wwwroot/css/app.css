@@ -7,6 +7,10 @@
     width: 100% !important;
 }
 
+.box-highlight {
+    box-shadow: 0 0.5em 1em -0.125em rgb(187 116 8 / 43%), 0 0px 0 1px rgb(115 17 17 / 63%);
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

@@ -32,7 +32,7 @@
                     <Authorized>
                         <div class="buttons">
                             <NavLink class="navbar-item" href= "Account/Messages">
-                                &#128231;
+                                @(UnreadMessages > 0 ? UnreadMessages.ToString() : " ") &#128231;
                             </NavLink>
                             <NavLink class="navbar-item" href= "Account/History">
                                 @UserName

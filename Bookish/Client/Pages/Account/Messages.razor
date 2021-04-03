@@ -30,7 +30,7 @@
             @foreach (AuthMessageModel messageModel in MessageModels)
             {
                 <div class="column is-full">
-                    <Comment_Component CommentModel="messageModel.Comment" DisplayPostTitle="true" PostTitleOverride="@messageModel.Title"></Comment_Component>
+                    <Comment_Component Class="@(!messageModel.Seen ? "box-highlight" : "")" CommentModel="messageModel.Comment" DisplayPostTitle="true" PostTitleOverride="@messageModel.Title"></Comment_Component>
                 </div>
             }
         </div>

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Bookish.Client.Shared
@@ -17,9 +19,14 @@ namespace Bookish.Client.Shared
         [Inject]
         public AuthenticationStateProvider AuthProvider { get; set; }
 
+        [Inject]
+        public HttpClient HttpClient { get; set; }
+
         public string UserName { get; set; }
 
         private bool IsActive = false;
+
+        public int UnreadMessages = 0;
 
         protected override async Task OnInitializedAsync()
         {
@@ -27,10 +34,16 @@ namespace Bookish.Client.Shared
             base.OnInitialized();
         }
 
+        protected override async Task OnParametersSetAsync()
+        {
+            UnreadMessages = await HttpClient.GetFromJsonAsync<int>("/api/amountmessages");
+            await base.OnParametersSetAsync();
+        }
+
         public async Task Logout()
         {
             AuthStateProvider authProvider = AuthProvider as AuthStateProvider;
-            authProvider.NotifyUserLogout();
+            await authProvider.NotifyUserLogout();
         }
     }
 }

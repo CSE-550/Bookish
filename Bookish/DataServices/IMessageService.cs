@@ -10,5 +10,7 @@ namespace Bookish.DataServices
         void CreateMessage(AuthMessageModel messageModel, int forUserId);
 
         List<AuthMessageModel> GetMessages(AuthUserModel authUser, int page);
+
+        int UnreadMessages(AuthUserModel authUser);
     }
 }

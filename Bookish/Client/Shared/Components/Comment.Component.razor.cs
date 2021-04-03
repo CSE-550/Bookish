@@ -26,6 +26,9 @@ namespace Bookish.Client.Shared.Components
         [Parameter]
         public string PostTitleOverride { get; set; }
 
+        [Parameter]
+        public string Class { get; set; }
+
         protected bool IsReplying { get; set; }
 
         protected bool IsCollapsed { get; set; }
