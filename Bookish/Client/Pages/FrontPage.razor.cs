@@ -36,7 +36,7 @@ namespace Bookish.Client.Pages
         {
             IsLoading = true;
             StateHasChanged();
-            List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist?page={Page}&countPerPage={CountPerPage}&orderBy=");
+            List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist?page={Page}&countPerPage={CountPerPage}&orderBy=votes");
             if (posts == null || posts.Count() == 0)
             {
                 IsEmpty = true;

@@ -1,0 +1,46 @@
+﻿@page "/Account/Messages"
+
+@using Bookish.Client.Shared.Components
+
+<div class="columns">
+    <div class="column">
+        <h1>@UserName's Account Messages</h1>
+    </div>
+</div>
+
+<div class="columns">
+    <div class="column">
+        <hr />
+    </div>
+</div>
+
+@if (MessageModels != null)
+{
+    @if (MessageModels.Count() == 0 && !IsLoading)
+    {
+        <div class="columns has-text-centered">
+            <div class="column">
+                <h3 class="title">Sorry, no messages available</h3>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="columns is-multiline">
+            @foreach (AuthMessageModel messageModel in MessageModels)
+            {
+                <div class="column is-full">
+                    <Comment_Component Class="@(!messageModel.Seen ? "box-highlight" : "")" CommentModel="messageModel.Comment" DisplayPostTitle="true" PostTitleOverride="@messageModel.Title"></Comment_Component>
+                </div>
+            }
+        </div>
+
+        <div class="columns">
+            <div class="column has-text-centered">
+                <button class="button is-success" @onclick="LoadMoreItems" disabled="@IsEmpty">
+                    Load Next Page
+                </button>
+            </div>
+        </div>
+    }
+}

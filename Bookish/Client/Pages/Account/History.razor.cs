@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace Bookish.Client.Pages.History
+namespace Bookish.Client.Pages.Account
 {
     public partial class History : ComponentBase
     {

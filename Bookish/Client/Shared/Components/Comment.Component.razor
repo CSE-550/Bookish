@@ -2,14 +2,14 @@
 
 @inherits Comment
 
-<div class="columns is-multiline is-paddingless box mb-5 post-item @(IsSub ? "mr-2" : "")">
+<div class="columns is-multiline is-paddingless box mb-5 post-item @(IsSub ? "mr-2" : "") @Class">
     @if (DisplayPostTitle)
     {
         <div class="column is-full">
             <div class="columns">
                 <div class="column">
                     <label class="has-text-weight-bold">
-                        @CommentModel.PostTitle
+                        @(PostTitleOverride ?? CommentModel.PostTitle)
                     </label>
                 </div>
             </div>
