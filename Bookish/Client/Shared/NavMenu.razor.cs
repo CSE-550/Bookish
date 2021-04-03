@@ -2,6 +2,7 @@
 using Bookish.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace Bookish.Client.Shared
 {
     public partial class NavMenu : ComponentBase
     {
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         [Inject]
         public ILocalStorageService LocalStorage { get; set; }
 
@@ -31,6 +35,7 @@ namespace Bookish.Client.Shared
         protected override async Task OnInitializedAsync()
         {
             UserName = await LocalStorage.GetItemAsync<string>("user");
+            NavigationManager.LocationChanged += LocationChanged;
             base.OnInitialized();
         }
 
@@ -44,6 +49,11 @@ namespace Bookish.Client.Shared
         {
             AuthStateProvider authProvider = AuthProvider as AuthStateProvider;
             await authProvider.NotifyUserLogout();
+        }
+        async void LocationChanged(object sender, LocationChangedEventArgs e)
+        {
+            UnreadMessages = await HttpClient.GetFromJsonAsync<int>("/api/amountmessages");
+            StateHasChanged();
         }
     }
 }
