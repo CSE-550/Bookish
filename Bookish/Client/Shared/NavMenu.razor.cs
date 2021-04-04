@@ -2,6 +2,7 @@
 using Bookish.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Routing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,11 @@ namespace Bookish.Client.Shared
 {
     public partial class NavMenu : ComponentBase
     {
+        public bool IsLoggedIn { get; set; }
+        
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
+
         [Inject]
         public ILocalStorageService LocalStorage { get; set; }
 
@@ -30,13 +36,16 @@ namespace Bookish.Client.Shared
 
         protected override async Task OnInitializedAsync()
         {
+            IsLoggedIn = await (AuthProvider as AuthStateProvider).IsAuthorized();
             UserName = await LocalStorage.GetItemAsync<string>("user");
+            NavigationManager.LocationChanged += LocationChanged;
             base.OnInitialized();
+
         }
 
         protected override async Task OnParametersSetAsync()
         {
-            UnreadMessages = await HttpClient.GetFromJsonAsync<int>("/api/amountmessages");
+            await SetUnreadMessages();
             await base.OnParametersSetAsync();
         }
 
@@ -44,6 +53,28 @@ namespace Bookish.Client.Shared
         {
             AuthStateProvider authProvider = AuthProvider as AuthStateProvider;
             await authProvider.NotifyUserLogout();
+        }
+        async void LocationChanged(object sender, LocationChangedEventArgs e)
+        {
+            await SetUnreadMessages();
+            StateHasChanged();
+        }
+
+        async Task SetUnreadMessages()
+        {
+            var res = await HttpClient.GetAsync("/api/amountmessages");
+            Console.WriteLine(res.StatusCode);
+            if (IsLoggedIn && res.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                IsLoggedIn = false;
+                await Logout();
+            }
+            else if(res.IsSuccessStatusCode)
+            {
+                IsLoggedIn = true;
+                var json = await res.Content.ReadAsStringAsync();
+                UnreadMessages = int.Parse(json);
+            }
         }
     }
 }

@@ -59,6 +59,10 @@ namespace Bookish.Client.Services
 
             Dictionary<string, object> keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
             claims.AddRange(keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString())));
+            foreach (var keyValue in keyValuePairs)
+            {
+                Console.WriteLine("{0}: {1}", keyValue.Key, keyValue.Value);
+            }
             return claims;
         }
 
@@ -109,6 +113,11 @@ namespace Bookish.Client.Services
             await LocalStorage.RemoveItemAsync("authToken");
             Task<AuthenticationState> authState = Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
             NotifyAuthenticationStateChanged(authState);
+        }
+        public async Task<bool> IsAuthorized()
+        {
+            string token = await LocalStorage.GetItemAsync<string>("authToken");
+            return !string.IsNullOrEmpty(token);
         }
     }
 }
