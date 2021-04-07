@@ -144,7 +144,7 @@ namespace Bookish.DataServices
         /// </returns>
         public List<CommentModel> GetPostComments(int postId, int skip, int take, int? userId)
         {
-            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_OnId == postId && com.Commented_UnderId == null), userId)
+            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_OnId == postId && com.Commented_UnderId == null && !com.IsHidden), userId)
                 .Skip(skip)
                 .Take(take)
                 .ToList();
@@ -162,11 +162,45 @@ namespace Bookish.DataServices
         /// </returns>
         public List<CommentModel> GetSubComments(int commentId, int skip, int take, int? userId)
         {
-            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_UnderId == commentId), userId)
+            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_UnderId == commentId && !com.IsHidden), userId)
                 .OrderBy(com => com.Id)
                 .Skip(skip)
                 .Take(take)
                 .ToList();
+        }
+
+        /// <summary>
+        /// Hides a comment if the user is a moderator
+        /// </summary>
+        /// <param name="authUser">The user making the request</param>
+        /// <param name="commentId">The comment that is being hidden</param>
+        /// <returns>
+        /// A updated comment model
+        /// </returns>
+        public CommentModel HideComment(AuthUserModel authUser, int commentId)
+        {
+            // Validate user is moderator
+            bool isModerator = context.Users
+                .Where(u => u.Id == authUser.Id)
+                .Select(u => u.IsModerator)
+                .FirstOrDefault();
+
+            if (!isModerator)
+            {
+                throw new Exception("Not a moderator");
+            }
+
+            IQueryable<Comment> commentQuery = context.Comments
+                .Where(c => c.Id == commentId);
+
+            Comment comment = commentQuery
+                .FirstOrDefault();
+
+            comment.IsHidden = true;
+            context.SaveChanges();
+
+            return this.CommentModelQuery(commentQuery, authUser.Id)
+                .FirstOrDefault();
         }
     }
 }

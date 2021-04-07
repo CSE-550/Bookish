@@ -44,6 +44,7 @@ namespace Bookish.DataServices
             // TODO: Verify counts and order the posts
             return GetPostListModels(
                 context.Posts
+                    .Where(p => !p.IsHidden)
                     .Skip(skip)
                     .Take(countPerPage),
                 authUser?.Id
@@ -97,6 +98,7 @@ namespace Bookish.DataServices
                     Posted_By = post.Posted_By.Username,
                     Posted_At = post.Posted_At,
                     Title = post.Title,
+                    IsHidden = post.IsHidden,
                     ISBN = post.ISBN,
                     Author = post.Author,
                     BookTitle = post.BookTitle,
@@ -172,6 +174,36 @@ namespace Bookish.DataServices
             context.SaveChanges();
 
             return this.GetPost(post.Id, null);
+        }
+
+        /// <summary>
+        /// Hides a post if the user is a moderator
+        /// </summary>
+        /// <param name="authUser">The auth user hiding the post</param>
+        /// <param name="postId">The post id</param>
+        /// <returns>
+        /// A newly hidden post
+        /// </returns>
+        public PostModel HidePost(AuthUserModel authUser, int postId)
+        {
+            bool isModerator = context.Users
+                .Where(u => u.Id == authUser.Id)
+                .Select(u => u.IsModerator)
+                .FirstOrDefault();
+
+            if (!isModerator)
+            {
+                throw new Exception("Not a moderator");
+            }
+
+            Post post = context.Posts
+                .Where(p => p.Id == postId)
+                .FirstOrDefault();
+
+            post.IsHidden = true;
+            context.SaveChanges();
+
+            return this.GetPost(post.Id, authUser);
         }
     }
 }

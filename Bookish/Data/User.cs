@@ -31,6 +31,11 @@ namespace Bookish.Data
         /// </summary>
         public byte[] Salt { get; set; }
 
+        /// <summary>
+        /// Determines if the user has the ability to hide and unhide posts
+        /// </summary>
+        public bool IsModerator { get; set; }
+
         public ICollection<Rating> Ratings { get; set; }
     }
 }

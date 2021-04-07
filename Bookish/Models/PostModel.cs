@@ -21,5 +21,7 @@ namespace Bookish.Models
         /// </summary>
         public List<CommentModel> Comments { get; set; }
 
+        public bool IsHidden { get; set; }
+
     }
 }
