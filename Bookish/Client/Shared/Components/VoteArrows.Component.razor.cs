@@ -31,6 +31,7 @@ namespace Bookish.Client.Shared.Components
         public async void Vote(int vote)
         {
             HttpResponseMessage response;
+            bool? prevUpvote = Model?.isUpvote;
             if (Model == null)
             {
                 // New vote
@@ -39,7 +40,6 @@ namespace Bookish.Client.Shared.Components
                     Post_Id = PostId,
                     isUpvote = vote == 1
                 });
-
             } 
             else
             {
@@ -49,7 +49,7 @@ namespace Bookish.Client.Shared.Components
             }
 
             Model = await response.Content.ReadFromJsonAsync<RatingModel>();
-            if (Votes != null)
+            if (Votes != null && prevUpvote == null || prevUpvote != Model.isUpvote)
             {
                 if (Model.isUpvote) Votes++;
                 else Votes--;
