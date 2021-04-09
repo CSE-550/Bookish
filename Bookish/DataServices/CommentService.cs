@@ -48,6 +48,7 @@ namespace Bookish.DataServices
                     Id = com.com.Id,
                     Parent_Id = com.com.Commented_UnderId,
                     Post_Id = com.com.Commented_OnId,
+                    IsHidden = com.com.IsHidden,
                     Commented_By = com.com.Commented_By.Username,
                     Rating = com.com.Ratings.Where(r => r.User_Id == authId).Select(r => new RatingModel { 
                         Id = r.Id,
@@ -144,7 +145,7 @@ namespace Bookish.DataServices
         /// </returns>
         public List<CommentModel> GetPostComments(int postId, int skip, int take, int? userId)
         {
-            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_OnId == postId && com.Commented_UnderId == null && !com.IsHidden), userId)
+            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_OnId == postId && com.Commented_UnderId == null), userId)
                 .Skip(skip)
                 .Take(take)
                 .ToList();
@@ -162,7 +163,7 @@ namespace Bookish.DataServices
         /// </returns>
         public List<CommentModel> GetSubComments(int commentId, int skip, int take, int? userId)
         {
-            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_UnderId == commentId && !com.IsHidden), userId)
+            return this.CommentModelQuery(context.Comments.Where(com => com.Commented_UnderId == commentId), userId)
                 .OrderBy(com => com.Id)
                 .Skip(skip)
                 .Take(take)
@@ -174,10 +175,11 @@ namespace Bookish.DataServices
         /// </summary>
         /// <param name="authUser">The user making the request</param>
         /// <param name="commentId">The comment that is being hidden</param>
+        /// <param name="hideComment">If we are hiding the comment</param>
         /// <returns>
         /// A updated comment model
         /// </returns>
-        public CommentModel HideComment(AuthUserModel authUser, int commentId)
+        public CommentModel HideComment(AuthUserModel authUser, int commentId, bool hideComment)
         {
             // Validate user is moderator
             bool isModerator = context.Users
@@ -196,7 +198,7 @@ namespace Bookish.DataServices
             Comment comment = commentQuery
                 .FirstOrDefault();
 
-            comment.IsHidden = true;
+            comment.IsHidden = hideComment;
             context.SaveChanges();
 
             return this.CommentModelQuery(commentQuery, authUser.Id)

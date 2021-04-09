@@ -1,4 +1,5 @@
-﻿using Bookish.Models;
+﻿using Bookish.Client.Services;
+using Bookish.Models;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,9 @@ namespace Bookish.Client.Shared.Components
     {
         [Inject]
         public HttpClient HttpClient { get; set; }
+
+        [Inject]
+        public ModeratorService ModeratorService { get; set; }
 
         [Parameter]
         public CommentModel CommentModel { get; set; }
@@ -78,8 +82,10 @@ namespace Bookish.Client.Shared.Components
             }
         }
 
-        protected void Vote(CommentModel comment, int vote)
+        public async void HideComment(bool hideComment)
         {
+            await HttpClient.GetFromJsonAsync<CommentModel>($"/api/hidecomment?commentId={CommentModel.Id}&hideComment={hideComment}");
+            CommentModel.IsHidden = hideComment;
             StateHasChanged();
         }
 

@@ -52,14 +52,20 @@
             {
                 <div class="columns">
                     <div class="column">
-                        <button @onclick="HidePost">
-                            Hide Post
-                        </button>
+                        @if (Model.IsHidden)
+                        {
+                            <button @onclick="@(() => HidePost(false))">
+                                UnHide Post
+                            </button>
+                        }
+                        else
+                        {
+                            <button @onclick="@(() => HidePost(true))">
+                                Hide Post
+                            </button>
+                        }
                     </div>
                 </div>
-            } else
-            {
-                <label>Ugh</label>
             }
 
             <div class="columns">

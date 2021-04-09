@@ -22,6 +22,6 @@ namespace Bookish.DataServices
 
         List<PostListModel> GetPostListModels(IQueryable<Post> postQuery, int? authUserId = null);
 
-        PostModel HidePost(AuthUserModel authUser, int postId);
+        PostModel HidePost(AuthUserModel authUser, int postId, bool hidePost);
     }
 }

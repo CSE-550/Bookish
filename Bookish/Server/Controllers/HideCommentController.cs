@@ -12,22 +12,21 @@ namespace Bookish.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HidePostController : ControllerBase
+    public class HideCommentController : ControllerBase
     {
         /// <summary>
-        /// Hides a post
+        /// Hides/Unhides a comment as a moderator
         /// </summary>
-        /// <param name="postService">The post service for hiding</param>
-        /// <param name="postId">The id of the post being hidden</param>
-        /// <returns>
-        /// A newly hidden post
-        /// </returns>
+        /// <param name="commentService">The comment service for CRUD</param>
+        /// <param name="commentId">The id of the comment</param>
+        /// <param name="hideComment">Hides/Unhides</param>
+        /// <returns></returns>
         [Authorize]
         [HttpGet]
-        public PostModel Get([FromServices] IPostService postService, [FromQuery]int postId, [FromQuery]bool hidePost)
+        public CommentModel Get([FromServices] ICommentService commentService, [FromQuery]int commentId, [FromQuery]bool hideComment)
         {
             AuthUserModel authUser = (AuthUserModel)this.HttpContext.Items["authUserModel"];
-            return postService.HidePost(authUser, postId, hidePost);
+            return commentService.HideComment(authUser, commentId, hideComment);
         }
     }
 }

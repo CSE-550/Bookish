@@ -60,6 +60,11 @@ namespace Bookish.Models
         /// </summary>
         public string Posted_By { get; set; }
 
+        /// <summary>
+        /// Determines if a moderator hide a post 
+        /// </summary>
+        public bool IsHidden { get; set; }
+
         public DateTime GetCreatedDate()
         {
             return Posted_At;

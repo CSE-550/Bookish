@@ -47,20 +47,5 @@ namespace Bookish.Server.Controllers
             return commentService.CreateComment(authUser, commentModel);
         }
 
-        /// <summary>
-        /// Hides a comment
-        /// </summary>
-        /// <param name="commentService">The comment service for hiding</param>
-        /// <param name="commentId">The comment id for hiding</param>
-        /// <returns>
-        /// The newly hidden model
-        /// </returns>
-        [Authorize]
-        [HttpPatch]
-        public CommentModel Patch([FromServices]ICommentService commentService, int commentId)
-        {
-            AuthUserModel authUser = (AuthUserModel)this.HttpContext.Items["authUserModel"];
-            return commentService.HideComment(authUser, commentId);
-        }
     }
 }

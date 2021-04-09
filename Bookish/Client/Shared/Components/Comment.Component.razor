@@ -43,9 +43,27 @@
                     </span>
                 </div>
                 <div class="column is-full">
-                    <p>
-                        @CommentModel.Body
-                    </p>
+                    @if (CommentModel.IsHidden)
+                    {
+                        @if(ModeratorService.IsModerator)
+                        {
+                            <p class="is-hidden-item">
+                                @CommentModel.Body
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                [removed]
+                            </p>
+                        }
+                    }
+                    else
+                    {
+                        <p>
+                            @CommentModel.Body
+                        </p>
+                    }
                 </div>
                 <div class="column is-full">
                     @if (!DisplayPostTitle)
@@ -56,6 +74,21 @@
                             <a class="ml-2 is-pulled-left" @onclick="@(() => IsHidingChildren = !IsHidingChildren)">
                                 @(IsHidingChildren ? "show" : "hide") @CommentModel.Comments.Count child comments
                             </a>
+                        }
+                        @if(ModeratorService.IsModerator)
+                        {
+                            @if (CommentModel.IsHidden)
+                            {
+                                <a class="ml-2 is-pulled-left" @onclick="@(() => HideComment(false))">
+                                    unhide comment
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="ml-2 is-pulled-left" @onclick="@(() => HideComment(true))">
+                                    hide comment
+                                </a>
+                            }
                         }
                     }
                     else

@@ -42,9 +42,9 @@ namespace Bookish.Client.Pages.Post
             StateHasChanged();
         }
 
-        public async void HidePost()
+        public async void HidePost(bool hidePost)
         {
-            Model = await HttpClient.GetFromJsonAsync<PostModel>($"/api/hidepost?postId={Model.Id}");
+            Model = await HttpClient.GetFromJsonAsync<PostModel>($"/api/hidepost?postId={Model.Id}&hidePost={hidePost}");
             StateHasChanged();
         }
     }

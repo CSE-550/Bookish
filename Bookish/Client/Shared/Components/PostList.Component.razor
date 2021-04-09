@@ -4,7 +4,7 @@
 
 @using Bookish.Client.Shared.Components
 
-<div class="columns post-item">
+<div class="columns post-item @(Post.IsHidden ? "is-hidden-item" : "")">
     <div class="column is-1">
         <VoteArrows_Component Model="Post.Rating" Votes="Post.Votes" PostId="Post.Id"></VoteArrows_Component>
     </div>

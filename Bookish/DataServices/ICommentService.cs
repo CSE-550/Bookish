@@ -21,6 +21,6 @@ namespace Bookish.DataServices
 
         List<CommentModel> GetCommentModels(IQueryable<Comment> commentQuery, int? userId);
 
-        CommentModel HideComment(AuthUserModel authUser, int commentId);
+        CommentModel HideComment(AuthUserModel authUser, int commentId, bool hideComment);
     }
 }
