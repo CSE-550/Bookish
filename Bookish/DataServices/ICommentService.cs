@@ -20,5 +20,7 @@ namespace Bookish.DataServices
         CommentModel CreateComment(AuthUserModel authUser, CommentModel comment);
 
         List<CommentModel> GetCommentModels(IQueryable<Comment> commentQuery, int? userId);
+
+        CommentModel HideComment(AuthUserModel authUser, int commentId, bool hideComment);
     }
 }

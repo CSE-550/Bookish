@@ -33,6 +33,8 @@ namespace Bookish.Data
         [ForeignKey("Posted_ById")]
         public User Posted_By { get; set; }
 
+        public bool IsHidden { get; set; }
+
         public ICollection<Comment> Comments { get; set; }
 
         public ICollection<Rating> Ratings { get; set; }

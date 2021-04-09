@@ -1,4 +1,5 @@
-﻿using Bookish.Models;
+﻿using Bookish.Client.Services;
+using Bookish.Models;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,9 @@ namespace Bookish.Client.Pages.Post
     {
         [Inject]
         public HttpClient HttpClient { get; set; }
+
+        [Inject]
+        public ModeratorService ModeratorService { get; set; }
 
         protected PostModel Model { get; set; }
 
@@ -36,7 +40,12 @@ namespace Bookish.Client.Pages.Post
             Model.Comments.Add(await response.Content.ReadFromJsonAsync<CommentModel>());
             CommentBody = "";
             StateHasChanged();
+        }
 
+        public async void HidePost(bool hidePost)
+        {
+            Model = await HttpClient.GetFromJsonAsync<PostModel>($"/api/hidepost?postId={Model.Id}&hidePost={hidePost}");
+            StateHasChanged();
         }
     }
 }

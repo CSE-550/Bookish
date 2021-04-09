@@ -16,11 +16,13 @@ namespace Bookish.Client.Services
     {
         private readonly HttpClient HttpClient;
         private readonly ILocalStorageService LocalStorage;
+        private readonly ModeratorService ModeratorService;
 
-        public AuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage)
+        public AuthStateProvider(HttpClient httpClient, ILocalStorageService localStorage, ModeratorService moderator)
         {
             HttpClient = httpClient;
             LocalStorage = localStorage;
+            ModeratorService = moderator;
         }
 
         /// <summary>
@@ -33,6 +35,8 @@ namespace Bookish.Client.Services
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             string token = await LocalStorage.GetItemAsync<string>("authToken");
+            bool moderator = await LocalStorage.GetItemAsync<bool>("moderator");
+            ModeratorService.IsModerator = moderator;
             if (string.IsNullOrWhiteSpace(token))
             {
                 // Not authenticated
@@ -95,6 +99,7 @@ namespace Bookish.Client.Services
         {
             await LocalStorage.SetItemAsync<string>("authToken", authUser.Token);
             await LocalStorage.SetItemAsync<string>("user", authUser.Username);
+            await LocalStorage.SetItemAsync<bool>("moderator", authUser.IsModerator);
 
             AuthenticationState authState = await GetAuthenticationStateAsync();
 
@@ -111,6 +116,8 @@ namespace Bookish.Client.Services
         public async Task NotifyUserLogout()
         {
             await LocalStorage.RemoveItemAsync("authToken");
+            await LocalStorage.RemoveItemAsync("user");
+            await LocalStorage.RemoveItemAsync("moderator");
             Task<AuthenticationState> authState = Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
             NotifyAuthenticationStateChanged(authState);
         }

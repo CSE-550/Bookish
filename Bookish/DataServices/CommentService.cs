@@ -48,6 +48,7 @@ namespace Bookish.DataServices
                     Id = com.com.Id,
                     Parent_Id = com.com.Commented_UnderId,
                     Post_Id = com.com.Commented_OnId,
+                    IsHidden = com.com.IsHidden,
                     Commented_By = com.com.Commented_By.Username,
                     Rating = com.com.Ratings.Where(r => r.User_Id == authId).Select(r => new RatingModel { 
                         Id = r.Id,
@@ -167,6 +168,41 @@ namespace Bookish.DataServices
                 .Skip(skip)
                 .Take(take)
                 .ToList();
+        }
+
+        /// <summary>
+        /// Hides a comment if the user is a moderator
+        /// </summary>
+        /// <param name="authUser">The user making the request</param>
+        /// <param name="commentId">The comment that is being hidden</param>
+        /// <param name="hideComment">If we are hiding the comment</param>
+        /// <returns>
+        /// A updated comment model
+        /// </returns>
+        public CommentModel HideComment(AuthUserModel authUser, int commentId, bool hideComment)
+        {
+            // Validate user is moderator
+            bool isModerator = context.Users
+                .Where(u => u.Id == authUser.Id)
+                .Select(u => u.IsModerator)
+                .FirstOrDefault();
+
+            if (!isModerator)
+            {
+                throw new Exception("Not a moderator");
+            }
+
+            IQueryable<Comment> commentQuery = context.Comments
+                .Where(c => c.Id == commentId);
+
+            Comment comment = commentQuery
+                .FirstOrDefault();
+
+            comment.IsHidden = hideComment;
+            context.SaveChanges();
+
+            return this.CommentModelQuery(commentQuery, authUser.Id)
+                .FirstOrDefault();
         }
     }
 }

@@ -25,6 +25,8 @@ namespace Bookish.Data
         [ForeignKey("Commented_ById")]
         public User Commented_By { get; set; }
 
+        public bool IsHidden { get; set; }
+
         public ICollection<Rating> Ratings { get; set; }
     }
 }

@@ -52,7 +52,8 @@ namespace Bookish.Server.Controllers
                     {
                         new Claim(ClaimTypes.Name, authUser.Username),
                         new Claim(ClaimTypes.Email, authUser.Email),
-                        new Claim(ClaimTypes.NameIdentifier, authUser.Id.ToString())
+                        new Claim(ClaimTypes.NameIdentifier, authUser.Id.ToString()),
+                        new Claim(ClaimTypes.Role, authUser.IsModerator.ToString())
                     }, 
                     expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings.GetSection("expiryInMinutes").Value)), 
                     signingCredentials: creds

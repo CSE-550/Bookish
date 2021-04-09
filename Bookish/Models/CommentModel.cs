@@ -66,6 +66,11 @@ namespace Bookish.Models
         /// </summary>
         public string PostTitle { get; set; }
 
+        /// <summary>
+        /// Determines if the comment is hidden
+        /// </summary>
+        public bool IsHidden { get; set; }
+
         public DateTime GetCreatedDate()
         {
             return Commented_At;

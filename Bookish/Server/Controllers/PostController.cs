@@ -44,5 +44,6 @@ namespace Bookish.Server.Controllers
             AuthUserModel authUser = (AuthUserModel)this.HttpContext.Items["authUserModel"];
             return await postService.CreatePost(authUser, postModel, openLibraryService);
         }
+
     }
 }

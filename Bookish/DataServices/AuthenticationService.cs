@@ -77,6 +77,7 @@ namespace Bookish.DataServices
                 Id = user.Id,
                 Email = user.Email,
                 Username = user.Username,
+                IsModerator = user.IsModerator,
                 // Token is generated server side
                 Token = ""
             };

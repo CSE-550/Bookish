@@ -3,6 +3,10 @@
     box-shadow: -1px 0px 6px 1px #e5e5e5
 }
 
+.is-hidden-item {
+    opacity: .5;
+}
+
 .is-full-width {
     width: 100% !important;
 }

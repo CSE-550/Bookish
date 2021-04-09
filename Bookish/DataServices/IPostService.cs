@@ -21,5 +21,7 @@ namespace Bookish.DataServices
         Task<PostModel> CreatePost(AuthUserModel authUser, PostModel postModel, OpenLibraryService openLibraryService);
 
         List<PostListModel> GetPostListModels(IQueryable<Post> postQuery, int? authUserId = null);
+
+        PostModel HidePost(AuthUserModel authUser, int postId, bool hidePost);
     }
 }
