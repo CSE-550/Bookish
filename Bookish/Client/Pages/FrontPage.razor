@@ -2,83 +2,33 @@
 
 @using Bookish.Client.Shared.Components
 
-@if (Posts.Count() == 0 && !IsLoading)
-{
-    <div class="columns has-text-centered">
+<div class="mb-6">
+    <div class="columns">
         <div class="column">
-            <h3 class="title">Sorry, no posts available</h3>
+            <div class="field">
+                <label class="label">Order Posts</label>
+                <div class="field-body">
+                    <div class="field">
+                        <select class="select" @onchange="SetOrderPostsBy" bind="@OrderPostsBy">
+                            <option></option>
+                            <option value="votesdesc">Votes DESC</option>
+                            <option value="votesasc">Votes ASC</option>
+                            <option value="commentsdesc">Comments DESC</option>
+                            <option value="commentsasc">Comments ASC</option>
+                            <option value="postdatedesc">Post Date DESC</option>
+                            <option value="postdateasc">Post Date ASC</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-}
-else
-{
-    <select id="Sort" name="Sort" @onchange="setSort" bind="@Sort">
-        <option value="votesdesc">Votes DESC</option>
-        <option value="votesasc">Votes ASC</option>
-        <option value="commentsdesc">Comments DESC</option>
-        <option value="commentsasc">Comments ASC</option>
-        <option value="postdatedesc">Post Date DESC</option>
-        <option value="postdateasc">Post Date ASC</option>
-    </select>
+
     <br />
 
-    if (Sort == "votesdesc")
+    @foreach (PostListModel post in Posts)
     {
-
-        @foreach (PostListModel post in Posts.OrderByDescending(post => post.Votes))
-        {
-            <PostList_Component Post="post"></PostList_Component>
-        }
-
-    }
-    else if (Sort == "votesasc")
-    {
-        @foreach (PostListModel post in Posts.OrderBy(post => post.Votes))
-        {
-            <PostList_Component Post="post"></PostList_Component>
-        }
-    }
-    else if (Sort == "commentsdesc")
-    {
-        @foreach (PostListModel post in Posts.OrderByDescending(post => post.TotalComments))
-        {
-            <PostList_Component Post="post"></PostList_Component>
-        }
-    }
-    else if (Sort == "commentsasc")
-    {
-        @foreach (PostListModel post in Posts.OrderBy(post => post.TotalComments))
-        {
-            <PostList_Component Post="post"></PostList_Component>
-        }
-    }
-    else if (Sort == "postdatedesc")
-    {
-        @foreach (PostListModel post in Posts.OrderByDescending(post => post.GetCreatedDate()))
-        {
-            <PostList_Component Post="post"></PostList_Component>
-        }
-    }
-    else if (Sort == "postdateasc")
-    {
-        @foreach (PostListModel post in Posts.OrderBy(post => post.GetCreatedDate()))
-        {
-            <PostList_Component Post="post"></PostList_Component>
-        }
-    }
-    else
-    {
-        @foreach (PostListModel post in Posts.OrderByDescending(post => post.Votes))
-        {
-            <PostList_Component Post="post"></PostList_Component>
-        }
+        <PostList_Component Post="post"></PostList_Component>
     }
 
-    <div class="columns">
-        <div class="column has-text-centered">
-            <button class="button is-success" @onclick="LoadNextPage" disabled="@IsEmpty && @IsMinPosts">
-                Load Next Page
-            </button>
-        </div>
-    </div>
-}
+</div>

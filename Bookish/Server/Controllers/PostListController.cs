@@ -24,7 +24,7 @@ namespace Bookish.Server.Controllers
         /// A list of posts
         /// </returns>
         [HttpGet]
-        public List<PostListModel> Get([FromServices] IPostService postService, [FromQuery] int page, [FromQuery] int countPerPage, [FromQuery] string orderBy)
+        public List<PostListModel> Get([FromServices] IPostService postService, [FromQuery] int page, [FromQuery] int countPerPage, [FromQuery] string? orderBy)
         {
             AuthUserModel authUser = (AuthUserModel)this.HttpContext.Items["authUserModel"];
             return postService.GetPosts(page, countPerPage, orderBy, authUser); 

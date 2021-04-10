@@ -48,6 +48,11 @@ namespace Bookish.Client.Shared.Components
                 response = await HttpClient.PatchAsync("/api/rating", new StringContent(JsonSerializer.Serialize(Model), Encoding.UTF8, "application/json-patch+json"));
             }
 
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                return;
+            }
+
             Model = await response.Content.ReadFromJsonAsync<RatingModel>();
             if (Votes != null && prevUpvote == null || prevUpvote != Model.isUpvote)
             {

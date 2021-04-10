@@ -25,51 +25,44 @@ namespace Bookish.Client.Pages
 
         protected bool IsEmpty { get; set; }
 
-        protected bool IsMinPosts { get; set; }
+        protected bool IsAllPosts { get; set; }
 
-        protected string Sort { get; set; }
+        protected string OrderPostsBy { get; set; }
 
-       protected override void OnInitialized()
+       protected override async Task OnInitializedAsync()
         {
             Posts = new List<PostListModel>();
             Page = 1;
             CountPerPage = 25;
-            LoadPosts();
+            await LoadPosts();
         }
 
-        protected async void LoadPosts()
+        protected async Task LoadPosts()
         {
             IsLoading = true;
-            Posts.Clear();
-            StateHasChanged();
-            List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist?page={Page}&countPerPage={CountPerPage}&orderBy=votes");
-            if (posts == null || posts.Count() == 0)
+            List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist?page={Page}&countPerPage={CountPerPage}&orderBy={OrderPostsBy}");
+            if (posts.Count() < CountPerPage)
             {
-                IsEmpty = true;
+                IsAllPosts = true;
             }
-            else
-            {
-                if (posts.Count() <= CountPerPage)
-                {
-                    IsMinPosts = true;
-                }
 
-                Posts.AddRange(posts);
-            }
+            Posts.AddRange(posts);
             IsLoading = false;
             StateHasChanged();
         }
 
         
-        protected void LoadNextPage()
+        protected async Task LoadNextPage()
         {
-          LoadPosts();
+            if (IsLoading || IsAllPosts) return;
+            Page++;
+            await LoadPosts();
         }
 
-        protected void setSort(ChangeEventArgs e)
+        protected async Task SetOrderPostsBy(ChangeEventArgs e)
         {
-            Sort = e.Value.ToString();
-            LoadPosts();
+            OrderPostsBy = e.Value.ToString();
+            await LoadPosts();
         }
 
     }
