@@ -1,5 +1,6 @@
 ﻿using Bookish.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace Bookish.Client.Pages
         [Inject]
         public HttpClient HttpClient { get; set; }
 
+        [Inject]
+        public IJSRuntime jsRuntime { get; set; }
+
         protected List<PostListModel> Posts { get; set; }
 
         protected int Page { get; set; }
@@ -25,51 +29,64 @@ namespace Bookish.Client.Pages
 
         protected bool IsEmpty { get; set; }
 
-        protected bool IsMinPosts { get; set; }
+        protected bool IsAllPosts { get; set; }
 
-        protected string Sort { get; set; }
+        protected string OrderPostsBy { get; set; }
 
-       protected override void OnInitialized()
+        private DotNetObjectReference<FrontPage> objectRef;
+
+        protected override async Task OnInitializedAsync()
         {
             Posts = new List<PostListModel>();
             Page = 1;
             CountPerPage = 25;
-            LoadPosts();
+            await LoadPosts();
         }
 
-        protected async void LoadPosts()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                objectRef = DotNetObjectReference.Create(this);
+                await jsRuntime.InvokeAsync<dynamic>("Observer.Initialize", objectRef, "PostLoadTriggerId");
+            }
+        }
+
+        protected async Task LoadPosts()
         {
             IsLoading = true;
-            Posts.Clear();
-            StateHasChanged();
-            List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist?page={Page}&countPerPage={CountPerPage}&orderBy=votes");
-            if (posts == null || posts.Count() == 0)
+            List<PostListModel> posts = await HttpClient.GetFromJsonAsync<List<PostListModel>>($"/api/postlist?page={Page}&countPerPage={CountPerPage}&orderBy={OrderPostsBy}");
+            if (posts.Count() < CountPerPage)
             {
-                IsEmpty = true;
+                IsAllPosts = true;
             }
-            else
-            {
-                if (posts.Count() <= CountPerPage)
-                {
-                    IsMinPosts = true;
-                }
 
-                Posts.AddRange(posts);
-            }
+            Posts.AddRange(posts);
             IsLoading = false;
             StateHasChanged();
         }
 
-        
-        protected void LoadNextPage()
+
+        protected async Task LoadNextPage()
         {
-          LoadPosts();
+            if (IsLoading || IsAllPosts) return;
+            Page++;
+            await LoadPosts();
         }
 
-        protected void setSort(ChangeEventArgs e)
+        protected async Task SetOrderPostsBy(ChangeEventArgs e)
         {
-            Sort = e.Value.ToString();
-            LoadPosts();
+            OrderPostsBy = e.Value.ToString();
+            Posts.Clear();
+            IsAllPosts = false;
+            Page = 1;
+            await LoadPosts();
+        }
+
+        [JSInvokable]
+        public async Task OnIntersection()
+        {
+            await LoadNextPage();
         }
 
     }

@@ -27,6 +27,11 @@ namespace Bookish.DataServices
         /// </returns>
         public RatingModel RatePost(AuthUserModel authUser, int postId, bool isUpvote)
         {
+            if (authUser == null)
+            {
+                return null;
+            }
+
             if (!context.Posts.Any(p => p.Id == postId))
             {
                 throw new Exception("Post does not exist");

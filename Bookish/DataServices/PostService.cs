@@ -41,29 +41,65 @@ namespace Bookish.DataServices
                 throw new Exception("Pagination must be above 1");
             }
 
+            if (countPerPage > 100)
+            {
+                throw new Exception("Pulling out to many posts");
+            }
+
             bool isModerator = authUser?.IsModerator ?? false;
 
-            // TODO: Verify counts and order the posts
-            return GetPostListModels(
+            IQueryable<PostListModel> postQuery = GetPostListModelsQuery(
                 context.Posts
                     .Where(p => isModerator || !p.IsHidden)
                     .Skip(skip)
                     .Take(countPerPage),
                 authUser?.Id
             );
+
+            switch (orderBy)
+            {
+                case "votesdesc":
+                    postQuery = postQuery.OrderByDescending(post => post.Votes);
+                    break;
+                case "votesasc":
+                    postQuery = postQuery.OrderBy(post => post.Votes);
+                    break;
+                case "commentsasc":
+                    postQuery = postQuery.OrderBy(post => post.TotalComments);
+                    break;
+                case "commentsdesc":
+                    postQuery = postQuery.OrderByDescending(post => post.TotalComments);
+                    break;
+                case "postdatesasc":
+                    postQuery = postQuery.OrderBy(post => post.Posted_At);
+                    break;
+                case "postdatedesc":
+                    postQuery = postQuery.OrderByDescending(post => post.Posted_At);
+                    break;
+                default:
+                    postQuery = postQuery
+                        .OrderByDescending(post => post.Votes)
+                        .ThenByDescending(post => post.TotalComments)
+                        .ThenByDescending(post => post.Posted_At);
+                    break;
+            }
+
+            return postQuery
+                .ToList();
         }
 
         /// <summary>
-        /// Gets a list of postlistmodels from a queryable
+        /// Gets a queryable of postlistmodels from a queryable
         /// </summary>
         /// <param name="postQuery">The post query to convert</param>
         /// <returns>
         /// A list of post list models
         /// </returns>
-        public List<PostListModel> GetPostListModels(IQueryable<Post> postQuery, int? authUserId = null) 
+        private IQueryable<PostListModel> GetPostListModelsQuery(IQueryable<Post> postQuery, int? authUserId = null) 
         {
             return postQuery
-                .Select(post => new PostListModel { 
+                .Select(post => new PostListModel
+                {
                     Id = post.Id,
                     Posted_At = post.Posted_At,
                     Title = post.Title,
@@ -73,14 +109,14 @@ namespace Bookish.DataServices
                     BookTitle = post.BookTitle,
                     Author = post.Author,
                     ISBN = post.ISBN,
-                    Rating = authUserId == null ? null : post.Ratings.Where(r => r.User_Id == authUserId).Select(r => new RatingModel { 
+                    Rating = authUserId == null ? null : post.Ratings.Where(r => r.User_Id == authUserId).Select(r => new RatingModel
+                    {
                         Id = r.Id,
                         Post_Id = r.Post_Id,
                         isUpvote = r.IsUpvoted
                     }).FirstOrDefault(),
                     TotalComments = context.Comments.Where(com => com.Commented_On.Id == post.Id).Count()
-                })
-                .ToList();
+                });
         }
 
         /// <summary>
@@ -213,6 +249,11 @@ namespace Bookish.DataServices
             context.SaveChanges();
 
             return this.GetPost(post.Id, authUser);
+        }
+
+        public List<PostListModel> GetPostListModels(IQueryable<Post> postQuery, int? authUserId)
+        {
+            return GetPostListModelsQuery(postQuery, authUserId).ToList();
         }
     }
 }
