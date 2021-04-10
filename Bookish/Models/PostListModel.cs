@@ -15,8 +15,8 @@ namespace Bookish.Models
         /// <summary>
         /// The ISBN of the book for getting information
         /// </summary>
-        [MaxLength(13)]
-        [MinLength(13)]
+        [MaxLength(14)]
+        [MinLength(10)]
         public string ISBN { get; set; }
 
         /// <summary>

@@ -23,15 +23,22 @@ namespace Bookish.DataServices
 
         public async Task<OpenLibraryBook> GetBookInformation(string isbn)
         {
-            HttpResponseMessage response = await Client.GetAsync($"/isbn/{isbn}.json");
-
-            response.EnsureSuccessStatusCode();
-
-            using var responseStream = await response.Content.ReadAsStreamAsync();
-            using (var reader = new StreamReader(responseStream, Encoding.UTF8))
+            try
             {
-                string value = reader.ReadToEnd();
-                return JsonConvert.DeserializeObject<OpenLibraryBook>(value, new JsonSerializerSettings());
+                HttpResponseMessage response = await Client.GetAsync($"/isbn/{isbn}.json");
+
+                response.EnsureSuccessStatusCode();
+
+                using var responseStream = await response.Content.ReadAsStreamAsync();
+                using (var reader = new StreamReader(responseStream, Encoding.UTF8))
+                {
+                    string value = reader.ReadToEnd();
+                    return JsonConvert.DeserializeObject<OpenLibraryBook>(value, new JsonSerializerSettings());
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
 

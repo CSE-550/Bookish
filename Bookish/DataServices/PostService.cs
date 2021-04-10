@@ -140,43 +140,48 @@ namespace Bookish.DataServices
             // Get the information
             OpenLibraryBook opBook = await openLibraryService.GetBookInformation(postModel.ISBN);
 
+            // Determine how to handle author
+            string author = null;
+
             if (opBook == null)
             {
                 throw new Exception("Failed to find book information");
             }
-
-            // Determine how to handle author
-            string author = null;
-
-            if (opBook.by_statement == null && opBook.authors != null)
-            {
-                // Get the author statement
-                OpenLibraryAuthor opauthor = await openLibraryService.GetAuthorInformation(opBook.authors.FirstOrDefault().key);
-                if (opauthor != null) {
-                    author = opauthor.name;
-                } 
-            } 
             else
             {
-                author = opBook.by_statement;
+
+                if (opBook.by_statement == null && opBook.authors != null)
+                {
+                    // Get the author statement
+                    OpenLibraryAuthor opauthor = await openLibraryService.GetAuthorInformation(opBook.authors.FirstOrDefault().key);
+                    if (opauthor != null)
+                    {
+                        author = opauthor.name;
+                    }
+                }
+                else
+                {
+                    author = opBook.by_statement;
+                }
+
+                Post post = new Post
+                {
+                    Title = postModel.Title,
+                    Body = postModel.Body,
+                    Posted_At = DateTime.Now,
+                    Posted_ById = authUser.Id,
+                    ISBN = postModel.ISBN,
+                    BookTitle = opBook.title,
+                    WorksId = opBook.works.FirstOrDefault()?.key.Replace("/works/", ""),
+                    Author = author
+                };
+
+                context.Posts.Add(post);
+                context.SaveChanges();
+
+                return this.GetPost(post.Id, null);
+
             }
-
-            Post post = new Post
-            {
-                Title = postModel.Title,
-                Body = postModel.Body,
-                Posted_At = DateTime.Now,
-                Posted_ById = authUser.Id,
-                ISBN = postModel.ISBN,
-                BookTitle = opBook.title,
-                WorksId = opBook.works.FirstOrDefault()?.key.Replace("/works/", ""),
-                Author = author
-            };
-
-            context.Posts.Add(post);
-            context.SaveChanges();
-
-            return this.GetPost(post.Id, null);
         }
 
         /// <summary>

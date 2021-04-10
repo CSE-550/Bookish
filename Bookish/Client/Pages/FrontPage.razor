@@ -12,14 +12,56 @@
 }
 else
 {
-    @foreach (PostListModel post in Posts)
+    <select id="Sort" name="Sort" @onchange="setSort" bind="@Sort">
+        <option value="votesdesc">Votes DESC</option>
+        <option value="votesasc">Votes ASC</option>
+        <option value="commentsdesc">Comments DESC</option>
+        <option value="commentsasc">Comments ASC</option>
+    </select>
+    <br />
+
+    if (Sort == "votesdesc")
     {
-        <PostList_Component Post="post"></PostList_Component>
+
+        @foreach (PostListModel post in Posts.OrderByDescending(post => post.Votes))
+        {
+            <PostList_Component Post="post"></PostList_Component>
+        }
+
     }
+    else if (Sort == "votesasc")
+    {
+        @foreach (PostListModel post in Posts.OrderBy(post => post.Votes))
+        {
+            <PostList_Component Post="post"></PostList_Component>
+        }
+    }
+    else if (Sort == "commentsdesc")
+    {
+        @foreach (PostListModel post in Posts.OrderByDescending(post => post.TotalComments))
+        {
+            <PostList_Component Post="post"></PostList_Component>
+        }
+    }
+    else if (Sort == "commentsasc")
+    {
+        @foreach (PostListModel post in Posts.OrderBy(post => post.TotalComments))
+        {
+            <PostList_Component Post="post"></PostList_Component>
+        }
+    }
+    else
+    {
+        @foreach (PostListModel post in Posts.OrderByDescending(post => post.Votes))
+        {
+            <PostList_Component Post="post"></PostList_Component>
+        }
+    }
+    
 
     <div class="columns">
         <div class="column has-text-centered">
-            <button class="button is-success" @onclick="LoadNextPage" disabled="@IsEmpty">
+            <button class="button is-success" @onclick="LoadNextPage" disabled="@IsEmpty && @IsMinPosts">
                 Load Next Page
             </button>
         </div>
