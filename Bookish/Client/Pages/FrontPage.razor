@@ -17,6 +17,8 @@ else
         <option value="votesasc">Votes ASC</option>
         <option value="commentsdesc">Comments DESC</option>
         <option value="commentsasc">Comments ASC</option>
+        <option value="postdatedesc">Post Date DESC</option>
+        <option value="postdateasc">Post Date ASC</option>
     </select>
     <br />
 
@@ -50,6 +52,20 @@ else
             <PostList_Component Post="post"></PostList_Component>
         }
     }
+    else if (Sort == "postdatedesc")
+    {
+        @foreach (PostListModel post in Posts.OrderByDescending(post => post.GetCreatedDate()))
+        {
+            <PostList_Component Post="post"></PostList_Component>
+        }
+    }
+    else if (Sort == "postdateasc")
+    {
+        @foreach (PostListModel post in Posts.OrderBy(post => post.GetCreatedDate()))
+        {
+            <PostList_Component Post="post"></PostList_Component>
+        }
+    }
     else
     {
         @foreach (PostListModel post in Posts.OrderByDescending(post => post.Votes))
@@ -57,7 +73,6 @@ else
             <PostList_Component Post="post"></PostList_Component>
         }
     }
-    
 
     <div class="columns">
         <div class="column has-text-centered">
