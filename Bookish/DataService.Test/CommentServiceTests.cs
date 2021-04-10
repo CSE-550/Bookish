@@ -116,12 +116,24 @@ namespace Bookish.DataService.Test
         /// the information matches
         /// </summary>
         [TestCase]
-        public void CommentOnComment()
+        public async Task CommentOnComment()
         {
+            // Create Post
+            PostModel model = new PostModel
+            {
+                Title = "This is a new book",
+                Body = "The body of the post",
+                Posted_At = DateTime.Now,
+                ISBN = "9780553573404"
+            };
+
+            model = await postService.CreatePost(authUser, model, openLibraryService);
+
             // Create top level comment, ignoring post
             CommentModel commentModel = new CommentModel
             {
-                Body = "This is a comment"
+                Body = "This is a comment",
+                Post_Id = model.Id
             };
 
             commentModel = commentService.CreateComment(authUser, commentModel);
