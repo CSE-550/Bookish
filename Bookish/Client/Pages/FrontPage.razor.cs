@@ -1,5 +1,6 @@
 ﻿using Bookish.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace Bookish.Client.Pages
         [Inject]
         public HttpClient HttpClient { get; set; }
 
+        [Inject]
+        public IJSRuntime jsRuntime { get; set; }
+
         protected List<PostListModel> Posts { get; set; }
 
         protected int Page { get; set; }
@@ -29,12 +33,23 @@ namespace Bookish.Client.Pages
 
         protected string OrderPostsBy { get; set; }
 
-       protected override async Task OnInitializedAsync()
+        private DotNetObjectReference<FrontPage> objectRef;
+
+        protected override async Task OnInitializedAsync()
         {
             Posts = new List<PostListModel>();
             Page = 1;
             CountPerPage = 25;
             await LoadPosts();
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                objectRef = DotNetObjectReference.Create(this);
+                await jsRuntime.InvokeAsync<dynamic>("Observer.Initialize", objectRef, "PostLoadTriggerId");
+            }
         }
 
         protected async Task LoadPosts()
@@ -51,7 +66,7 @@ namespace Bookish.Client.Pages
             StateHasChanged();
         }
 
-        
+
         protected async Task LoadNextPage()
         {
             if (IsLoading || IsAllPosts) return;
@@ -62,7 +77,16 @@ namespace Bookish.Client.Pages
         protected async Task SetOrderPostsBy(ChangeEventArgs e)
         {
             OrderPostsBy = e.Value.ToString();
+            Posts.Clear();
+            IsAllPosts = false;
+            Page = 1;
             await LoadPosts();
+        }
+
+        [JSInvokable]
+        public async Task OnIntersection()
+        {
+            await LoadNextPage();
         }
 
     }
