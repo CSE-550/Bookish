@@ -39,10 +39,18 @@ namespace Bookish.Server.Controllers
         /// </returns>
         [Authorize]
         [HttpPut]
-        public async Task<PostModel> Put([FromServices] OpenLibraryService openLibraryService, [FromServices] IPostService postService, [FromBody] PostModel postModel)
+        public async Task<IActionResult> Put([FromServices] OpenLibraryService openLibraryService, [FromServices] IPostService postService, [FromBody] PostModel postModel)
         {
-            AuthUserModel authUser = (AuthUserModel)this.HttpContext.Items["authUserModel"];
-            return await postService.CreatePost(authUser, postModel, openLibraryService);
+            try
+            {
+                AuthUserModel authUser = (AuthUserModel)this.HttpContext.Items["authUserModel"];
+                var post = await postService.CreatePost(authUser, postModel, openLibraryService);
+                return Ok(post);
+            }
+            catch (ArgumentException e) {
+                return BadRequest(new {ISBN = e.Message});
+            }
+           
         }
 
     }

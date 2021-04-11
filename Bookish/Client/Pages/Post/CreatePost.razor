@@ -15,6 +15,7 @@
         <label class="label">Book ISBN</label>
         <div class="control">
             <InputText id="name" class="input" @bind-Value="Post.ISBN" />
+            <span class="has-text-danger">@ISBNError</span>
         </div>
     </div>
 

@@ -19,6 +19,7 @@ namespace Bookish.Client.Pages.Post
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        public string ISBNError { get; private set; }
 
         /// <summary>
         /// The post the user is creating
@@ -38,11 +39,22 @@ namespace Bookish.Client.Pages.Post
         protected async void HandleValidSubmit()
         {
             HttpResponseMessage response = await HttpClient.PutAsJsonAsync("/api/post", Post);
+            ISBNError = "";
+            if (response.IsSuccessStatusCode)
+            {
+                Post = await response.Content.ReadFromJsonAsync<PostModel>();
 
-            Post = await response.Content.ReadFromJsonAsync<PostModel>();
+                // Redirect to the view post page
+                NavigationManager.NavigateTo($"/Post/View/{Post.Id}");
+            }
+            else if (response.StatusCode ==System.Net.HttpStatusCode.BadRequest )
+            {
+                var erros = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                ISBNError = erros["isbn"];
+                StateHasChanged();
+            }
 
-            // Redirect to the view post page
-            NavigationManager.NavigateTo($"/Post/View/{Post.Id}");
+                
         }
 
     }
