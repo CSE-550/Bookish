@@ -6,11 +6,10 @@
     <div class="columns">
         <div class="column">
             <div class="field">
-                <label class="label">Order Posts</label>
                 <div class="field-body">
-                    <div class="field">
-                        <select class="select" @onchange="SetOrderPostsBy" bind="@OrderPostsBy">
-                            <option></option>
+                    <div class=" select">
+                        <select style="font-size:0.8em" @onchange="SetOrderPostsBy" bind="@OrderPostsBy">
+                            <option>Order Posts by:</option>
                             <option value="votesdesc">Votes DESC</option>
                             <option value="votesasc">Votes ASC</option>
                             <option value="commentsdesc">Comments DESC</option>

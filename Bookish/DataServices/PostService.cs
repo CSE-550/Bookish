@@ -181,7 +181,7 @@ namespace Bookish.DataServices
 
             if (opBook == null)
             {
-                throw new Exception("Failed to find book information");
+                throw new ArgumentException("This is an invalid ISBN, please try again using a correct number");
             }
             else
             {

@@ -32,7 +32,7 @@ namespace Bookish.Server.Middleware
                         Id = int.Parse(token.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier).FirstOrDefault()?.Value),
                         Email = token.Claims.Where(c => c.Type == ClaimTypes.Email).FirstOrDefault().Value,
                         Username = token.Claims.Where(c => c.Type == ClaimTypes.Name).FirstOrDefault().Value,
-                        IsModerator = bool.Parse(token.Claims.Where(c => c.Type == ClaimTypes.Role).FirstOrDefault().Value)
+                        IsModerator = bool.Parse(token.Claims.Where(c => c.Type == ClaimTypes.Role).FirstOrDefault()?.Value)
                     };
                     httpContext.Items["authUserModel"] = model;
                 }
