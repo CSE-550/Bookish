@@ -12,3 +12,13 @@ A book review social media website
 - Update appsettings.json to have connection string to database
 - Run `dotnet ef database update --project Data`
 - Start project
+
+# Deployment
+
+## Note: This assumes you have heroku access
+
+- Install heroku ci
+- `heroku login`
+- `heroku containger:login`
+- `heroku container:push web -a bookish-team2 --context-path={Path to top level repo}`
+- `heroku container:release web -a bookish-team2`
