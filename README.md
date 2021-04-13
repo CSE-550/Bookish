@@ -18,6 +18,7 @@ A book review social media website
 ## Note: This assumes you have heroku access
 
 - Install heroku ci
+- Install docker
 - `heroku login`
 - `heroku containger:login`
 - `heroku container:push web -a bookish-team2 --context-path={Path to top level repo}`
