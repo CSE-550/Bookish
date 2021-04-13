@@ -25,3 +25,11 @@ A book review social media website
 - `heroku container:push web -a bookish-team2 --context-path={Path to top level repo}`
 - `cd to Bookish Server`
 - `heroku container:release web -a bookish-team2`
+
+# Database updates
+
+- Login to heroku
+- Get the connection string
+- Add to Context.cs Design time database
+- MAKE SURE TO ADD SSL MODE=Require and TrustServerCertificate=True;
+- Run `dotnet ef database update --project Data`
