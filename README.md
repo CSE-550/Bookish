@@ -21,5 +21,7 @@ A book review social media website
 - Install docker
 - `heroku login`
 - `heroku containger:login`
+- `cd to Bookish top level`
 - `heroku container:push web -a bookish-team2 --context-path={Path to top level repo}`
+- `cd to Bookish Server`
 - `heroku container:release web -a bookish-team2`
